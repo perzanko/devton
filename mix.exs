@@ -20,7 +20,7 @@ defmodule Devton.MixProject do
   def application do
     [
       mod: {Devton.Application, []},
-      extra_applications: [:logger, :runtime_tools, :eventstore]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -60,7 +60,7 @@ defmodule Devton.MixProject do
       "read_store.reset": ["ecto.drop", "ecto.setup"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["read_store.setup", "test"]
     ]
   end
 end
