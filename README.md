@@ -6,6 +6,7 @@ To start your Phoenix server:
   * Create and migrate your event store with `mix event_store.setup`
   * Create and migrate your read store with `mix read_store.setup`
   * Start Phoenix endpoint with `mix phx.server`
+  * Run tests with `mix test`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
