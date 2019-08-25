@@ -44,7 +44,8 @@ defmodule Devton.MixProject do
       {:commanded, "~> 0.19"},
       {:eventstore, "~> 0.17.0", runtime: Mix.env() != :test},
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
-      {:commanded_ecto_projections, "~> 0.8"}
+      {:commanded_ecto_projections, "~> 0.8"},
+      {:skooma, "~> 0.2.0"}
     ]
   end
 

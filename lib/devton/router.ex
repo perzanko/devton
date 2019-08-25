@@ -7,6 +7,9 @@ defmodule Devton.Router do
     CreateWorkspace,
     }
 
+
+  middleware(Devton.Support.Middleware.ValidateCommand)
+
   dispatch(
     [
       CreateWorkspace,

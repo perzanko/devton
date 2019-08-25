@@ -16,4 +16,13 @@ defmodule Devton.Workspaces.WorkspacesTest do
     assert is_binary(uuid) == true
   end
 
+#  test "opens account with invalid command" do
+#    params = %{
+#      "name" => "test_name"
+#    }
+#
+#    assert {:ok, %Workspace{ uuid: uuid } } = Workspaces.create_workspace(params)
+#    assert is_binary(uuid) == true
+#  end
+
 end
