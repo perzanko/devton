@@ -45,7 +45,7 @@ defmodule Devton.Workspaces.WorkspacesTest do
   @tag :get_workspace
   test "gets workspace by name" do
     workspace = Mother.Workspace.simple()
-    {:ok, %Workspace{uuid: uuid}} = Workspaces.create_workspace(workspace)
+    {:ok, %Workspace{}} = Workspaces.create_workspace(workspace)
     :timer.sleep(500)
     assert {:ok, %Workspace{uuid: uuid, name: name}} = Workspaces.get_workspace(%{"name" => Map.get(workspace, "name")})
   end
