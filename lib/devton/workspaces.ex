@@ -12,13 +12,24 @@ defmodule Devton.Workspaces do
 
   alias Devton.Workspaces.Projections.Workspace
 
-  def get_workspace(id) do
-    case Repo.get(Workspace, id) do
+  def get_workspace(clause) do
+    result = case clause do
+      %{ "id" => uuid } ->
+        Repo.get(Workspace, uuid)
+      %{ "name" => name } ->
+        Repo.get_by(Workspace, name: name)
+      _ -> {:error, :invalid_query}
+    end
+    case result do
       %Workspace{} = workspace ->
         {:ok, workspace}
-      _reply ->
+      _ ->
         {:error, :not_found}
     end
+  end
+
+  def get_workspaces() do
+    Repo.all(Workspace)
   end
 
   def create_workspace(
