@@ -5,6 +5,8 @@ defmodule Devton.Router do
 
   alias Devton.Workspaces.Commands.{
     CreateWorkspace,
+    EnableWorkspace,
+    DisableWorkspace,
     }
 
 
@@ -13,6 +15,8 @@ defmodule Devton.Router do
   dispatch(
     [
       CreateWorkspace,
+      EnableWorkspace,
+      DisableWorkspace,
     ],
     to: Workspace,
     identity: :uuid

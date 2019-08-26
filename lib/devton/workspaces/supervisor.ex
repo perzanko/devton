@@ -11,7 +11,9 @@ defmodule Devton.Workspaces.Supervisor do
   def init(arg) do
     children = [
       # Projectors
-      worker(Projectors.WorkspaceCreated, [], id: :workspace),
+      worker(Projectors.WorkspaceCreated, [], id: :workspace_created_projector),
+      worker(Projectors.WorkspaceEnabled, [], id: :workspace_enabled_projector),
+      worker(Projectors.WorkspaceDisabled, [], id: :workspace_disabled_projector),
 
       # Process managers
       worker(ProcessManagers.WorkspacesSaga, [], id: :workspaces_saga)

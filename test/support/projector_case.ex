@@ -15,12 +15,7 @@ defmodule Devton.ProjectorCase do
   end
 
   setup _tags do
-    :ok = Devton.Test.ProjectorUtils.truncate_database()
-
-    on_exit(fn ->
-      Devton.Test.ProjectorUtils.truncate_database()
-    end)
-
+    :ok = Devton.Test.ProjectorUtils.truncate_database
     :ok
   end
 end

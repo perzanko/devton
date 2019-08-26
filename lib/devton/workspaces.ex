@@ -5,10 +5,21 @@ defmodule Devton.Workspaces do
   alias Devton.Router
 
   alias Devton.Workspaces.Commands.{
-    CreateWorkspace
+    CreateWorkspace,
+    EnableWorkspace,
+    DisableWorkspace,
     }
 
   alias Devton.Workspaces.Projections.Workspace
+
+  def get_workspace(id) do
+    case Repo.get(Workspace, id) do
+      %Workspace{} = workspace ->
+        {:ok, workspace}
+      _reply ->
+        {:error, :not_found}
+    end
+  end
 
   def create_workspace(
         %{
@@ -19,7 +30,7 @@ defmodule Devton.Workspaces do
       ) do
     uuid = UUID.uuid4()
 
-    dispatch_result =
+    result =
       %CreateWorkspace{
         uuid: uuid,
         name: name,
@@ -28,7 +39,7 @@ defmodule Devton.Workspaces do
       }
       |> Router.dispatch()
 
-    case dispatch_result do
+    case result do
       :ok ->
         {
           :ok,
@@ -36,6 +47,26 @@ defmodule Devton.Workspaces do
         }
       reply ->
         reply
+    end
+  end
+
+  def enable_workspace(%{"id" => uuid}) do
+    result =
+      %EnableWorkspace{uuid: uuid}
+      |> Router.dispatch()
+    case result do
+      :ok -> {:ok, true}
+      reply -> reply
+    end
+  end
+
+  def disable_workspace(%{"id" => uuid}) do
+    result =
+      %DisableWorkspace{uuid: uuid}
+      |> Router.dispatch()
+    case result do
+      :ok -> {:ok, true}
+      reply -> reply
     end
   end
 

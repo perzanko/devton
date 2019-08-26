@@ -10,11 +10,15 @@ defmodule Devton.Workspaces.ProcessManagers.WorkspacesSaga do
   alias __MODULE__
 
   alias Devton.Workspaces.Events.{
-    WorkspaceCreated
+    WorkspaceCreated,
+    WorkspaceEnabled,
+    WorkspaceDisabled,
     }
 
   alias Devton.Workspaces.Commands.{}
 
   def interested?(%WorkspaceCreated{}), do: false
+  def interested?(%WorkspaceEnabled{}), do: false
+  def interested?(%WorkspaceDisabled{}), do: false
   def interested?(_event), do: false
 end

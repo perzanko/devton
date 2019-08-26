@@ -22,3 +22,5 @@ config :devton, Devton.Repo,
        password: "postgres",
        database: "devton_readstore_test",
        hostname: "localhost"
+
+config :ex_unit, capture_log: true
