@@ -14,6 +14,7 @@ defmodule Devton.Workspaces.Projectors.WorkspaceCreated do
         %Workspace{
           uuid: event.uuid,
           name: event.name,
+          identifier: event.identifier,
           enabled: event.enabled?,
           token: event.token
         }

@@ -35,6 +35,7 @@ defmodule Devton.Workspaces do
   def create_workspace(
         %{
           "name" => name,
+          "identifier" => identifier,
           "token" => token,
           "enabled" => enabled,
         }
@@ -46,6 +47,7 @@ defmodule Devton.Workspaces do
         uuid: uuid,
         name: name,
         token: token,
+        identifier: identifier,
         enabled?: enabled,
       }
       |> Router.dispatch()

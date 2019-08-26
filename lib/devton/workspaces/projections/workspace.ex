@@ -6,6 +6,7 @@ defmodule Devton.Workspaces.Projections.Workspace do
   schema "workspace" do
     field :name, :string
     field :token, :string
+    field :identifier, :string
     field :enabled, :boolean
 
     timestamps()

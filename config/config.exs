@@ -34,3 +34,8 @@ config :commanded_ecto_projections,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :slack,
+       client_id: "739395409799.739716238054",
+       client_secret: "5eda2093e92aba482bdd73ba52662af2",
+       root_url: "http://localhost:4000/api/slack/auth"

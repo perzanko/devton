@@ -1,6 +1,7 @@
 defmodule Devton.Workspaces.Aggregates.Workspace do
   defstruct uuid: nil,
             name: nil,
+            identifier: nil,
             token: nil,
             enabled?: true
 
@@ -22,6 +23,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
         %CreateWorkspace{
           uuid: uuid,
           name: name,
+          identifier: identifier,
           token: token,
           enabled?: enabled?,
         }
@@ -29,31 +31,34 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
     %WorkspaceCreated{
       uuid: uuid,
       name: name,
+      identifier: identifier,
       token: token,
       enabled?: enabled?,
     }
   end
 
   def execute(
-        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name},
+        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name, identifier: identifier},
         %EnableWorkspace{uuid: uuid}
       ) do
     %WorkspaceEnabled{
       uuid: uuid,
       enabled?: true,
+      identifier: identifier,
       token: token,
       name: name,
     }
   end
 
   def execute(
-        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name},
+        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name, identifier: identifier},
         %DisableWorkspace{uuid: uuid}
       ) do
     %WorkspaceDisabled{
       uuid: uuid,
       enabled?: false,
       token: token,
+      identifier: identifier,
       name: name,
     }
   end
@@ -86,6 +91,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
           uuid: uuid,
           name: name,
           token: token,
+          identifier: identifier,
           enabled?: enabled?,
         }
       ) do
@@ -95,6 +101,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
       uuid: uuid,
       name: name,
       token: token,
+      identifier: identifier,
       enabled?: enabled?,
     }
   end

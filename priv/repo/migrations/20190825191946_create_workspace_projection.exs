@@ -11,4 +11,8 @@ defmodule Devton.Repo.Migrations.CreateWorkspaceProjection do
       timestamps()
     end
   end
+
+  def down do
+    drop table("workspace")
+  end
 end

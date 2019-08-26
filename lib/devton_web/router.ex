@@ -7,5 +7,7 @@ defmodule DevtonWeb.Router do
 
   scope "/api", DevtonWeb do
     pipe_through :api
+
+    get "/slack/auth", SlackAuthController, :index
   end
 end
