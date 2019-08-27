@@ -6,6 +6,7 @@ defmodule Devton.Repo.Migrations.CreateWorkspaceProjection do
       add :uuid, :uuid, primary_key: true
       add :name, :string
       add :token, :string
+      add :bot_token, :string
       add :enabled, :boolean
 
       timestamps()

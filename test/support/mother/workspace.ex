@@ -6,6 +6,7 @@ defmodule Devton.Test.Mother.Workspace do
       "name" => "test_name",
       "identifier" => "test_id",
       "token" => "test_token",
+      "bot_token" => "test_bot_token",
       "enabled" => true,
     }
   end
@@ -15,6 +16,7 @@ defmodule Devton.Test.Mother.Workspace do
       "name" => "test_name",
       "identifier" => "test_id",
       "token" => nil,
+      "bot_token" => "test_bot_token",
       "enabled" => false,
     }
   end

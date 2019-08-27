@@ -20,11 +20,8 @@ defmodule DevtonSlack.Manager do
     {:ok, state}
   end
 
-  def refresh(timeout) do
-    spawn(fn ->
-      :timer.sleep(timeout);
-      GenServer.cast(__MODULE__, :refresh_bots)
-    end)
+  def refresh do
+    GenServer.cast(__MODULE__, :refresh_bots)
   end
 
   def handle_cast(:refresh_bots, state) do

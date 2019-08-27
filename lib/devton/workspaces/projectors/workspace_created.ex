@@ -16,7 +16,8 @@ defmodule Devton.Workspaces.Projectors.WorkspaceCreated do
           name: event.name,
           identifier: event.identifier,
           enabled: event.enabled?,
-          token: event.token
+          token: event.token,
+          bot_token: event.bot_token
         }
       )
     end

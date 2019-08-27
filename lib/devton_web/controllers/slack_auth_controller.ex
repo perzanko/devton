@@ -15,7 +15,8 @@ defmodule DevtonWeb.SlackAuthController do
           Workspaces.enable_workspace(
             %{
               "id" => uuid,
-              "token" => workspace_details["bot"]["bot_access_token"],
+              "token" => workspace_details["access_token"],
+              "bot_token" => workspace_details["bot"]["bot_access_token"],
             },
             %{
               "user_id" => workspace_details["user_id"]
@@ -25,7 +26,8 @@ defmodule DevtonWeb.SlackAuthController do
           Workspaces.create_workspace(
             %{
               "name" => workspace_details["team_name"],
-              "token" => workspace_details["bot"]["bot_access_token"],
+              "token" => workspace_details["access_token"],
+              "bot_token" => workspace_details["bot"]["bot_access_token"],
               "identifier" => workspace_details["team_id"],
               "enabled" => true,
             },

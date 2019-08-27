@@ -17,7 +17,8 @@ defmodule Devton.Workspaces.Projectors.WorkspaceEnabled do
           Changeset.change(
             workspace,
             enabled: event.enabled?,
-            token: event.token
+            token: event.token,
+            bot_token: event.bot_token
           )
         )
       else

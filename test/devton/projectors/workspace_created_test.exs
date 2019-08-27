@@ -12,6 +12,7 @@ defmodule Devton.Workspaces.Projectors.WorkspaceCreatedTest do
       uuid: uuid,
       name: "test_name",
       token: "test_token",
+      bot_token: "test_bot_token",
       enabled?: true
     }
 

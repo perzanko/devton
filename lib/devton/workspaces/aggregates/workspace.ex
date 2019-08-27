@@ -2,6 +2,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
   defstruct uuid: nil,
             name: nil,
             identifier: nil,
+            bot_token: nil,
             token: nil,
             enabled?: true
 
@@ -25,6 +26,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
           name: name,
           identifier: identifier,
           token: token,
+          bot_token: bot_token,
           enabled?: enabled?,
         }
       ) do
@@ -33,19 +35,21 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
       name: name,
       identifier: identifier,
       token: token,
+      bot_token: bot_token,
       enabled?: enabled?,
     }
   end
 
   def execute(
         %Workspace{uuid: uuid} = workspace,
-        %EnableWorkspace{uuid: uuid, token: token}
+        %EnableWorkspace{uuid: uuid, token: token, bot_token: bot_token}
       ) do
     %WorkspaceEnabled{
       uuid: uuid,
       enabled?: true,
       identifier: workspace.identifier,
       token: token,
+      bot_token: bot_token,
       name: workspace.name,
     }
   end
@@ -57,6 +61,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
     %WorkspaceDisabled{
       uuid: uuid,
       enabled?: false,
+      bot_token: workspace.bot_token,
       token: workspace.token,
       identifier: workspace.identifier,
       name: workspace.name,
@@ -71,9 +76,10 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
           uuid: uuid,
           enabled?: enabled?,
           token: token,
+          bot_token: bot_token,
         }
       ) do
-    %Workspace{workspace | enabled?: enabled?, token: token }
+    %Workspace{workspace | enabled?: enabled?, token: token, bot_token: bot_token}
   end
 
   def apply(
@@ -92,6 +98,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
           uuid: uuid,
           name: name,
           token: token,
+          bot_token: bot_token,
           identifier: identifier,
           enabled?: enabled?,
         }
@@ -102,6 +109,7 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
       uuid: uuid,
       name: name,
       token: token,
+      bot_token: bot_token,
       identifier: identifier,
       enabled?: enabled?,
     }

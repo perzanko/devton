@@ -1,6 +1,6 @@
 defmodule Devton.Workspaces.Commands.EnableWorkspace do
-  @enforce_keys [:uuid, :token]
-  defstruct [:uuid, :token]
+  @enforce_keys [:uuid, :token, :bot_token]
+  defstruct [:uuid, :token, :bot_token]
 
   def valid?(command) do
     Map.from_struct(command)
@@ -8,6 +8,10 @@ defmodule Devton.Workspaces.Commands.EnableWorkspace do
   end
 
   defp schema do
-    %{uuid: :string, token: :string}
+    %{
+      uuid: :string,
+      token: :string,
+      bot_token: :string
+    }
   end
 end
