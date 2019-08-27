@@ -9,7 +9,6 @@ defmodule DevtonSlack.Rtm do
 
   def handle_event(message = %{type: "message"}, slack, state) do
     Logger.info "Got message '#{message.text}'"
-    IO.inspect(slack)
     send_message("I got a message!", message.channel, slack)
     {:ok, state}
   end

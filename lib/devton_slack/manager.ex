@@ -36,7 +36,6 @@ defmodule DevtonSlack.Manager do
   end
 
   defp start_bots(_state) do
-    IO.inspect("start_bots")
     process_ids = start_all_bots()
     poll()
     {:noreply, process_ids}
