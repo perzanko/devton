@@ -9,21 +9,21 @@ Let's create your own *dev.to* newsletter!
 
   def help do
     "
-Usage
-```
-devton subscribe [options]
-devton unsubscribe
-
--c, --cron             # Cron configuration for newsletter
--t, --tags             # Subscription tags
--h, --help             # Show this screen
-```
-
-Example
-```
-devton subscribe --cron \"0 12 * * 1\" --tags \"javascript,webdev\"
-```
-It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every Monday*.
+> Usage
+> ```
+> devton subscribe [options]
+> devton unsubscribe
+>
+> -c, --cron             # Cron configuration for newsletter
+> -t, --tags             # Subscription tags
+> -h, --help             # Show this screen
+> ```
+>
+> Example
+> ```
+> devton subscribe --cron \"0 12 * * 1\" --tags \"javascript,webdev\"
+> ```
+> It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every Monday*.
     "
   end
 end
