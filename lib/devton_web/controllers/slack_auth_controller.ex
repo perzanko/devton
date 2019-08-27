@@ -7,24 +7,24 @@ defmodule DevtonWeb.SlackAuthController do
   action_fallback FallbackController
 
   def index(conn, %{"code" => code, "state" => state}) do
-    with %{"ok" => true} = workspace <- authorize(code) do
-      existing_workspace = Workspaces.get_workspace(%{"name" => workspace["team_name"]})
-
+    with %{"ok" => true} = workspace_details <- authorize(code) do
+      existing_workspace = Workspaces.get_workspace(%{"name" => workspace_details["team_name"]})
       case existing_workspace do
         {:ok, %Workspace{uuid: uuid}} ->
           Workspaces.enable_workspace(%{"id" => uuid})
         _ ->
           Workspaces.create_workspace(
             %{
-              "name" => workspace["team_name"],
-              "token" => workspace["access_token"],
-              "identifier" => workspace["team_id"],
+              "name" => workspace_details["team_name"],
+              "token" => workspace_details["bot"]["bot_access_token"],
+              "identifier" => workspace_details["team_id"],
               "enabled" => true,
             }
           )
       end
 
-      redirect(conn, external: "https://#{workspace["team_name"]}.slack.com/")
+      DevtonSlack.Manager.refresh()
+      redirect(conn, external: "https://#{workspace_details["team_name"]}.slack.com/")
     end
   end
 

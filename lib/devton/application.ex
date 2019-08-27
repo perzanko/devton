@@ -9,7 +9,8 @@ defmodule Devton.Application do
     children = [
       supervisor(Devton.Repo, []),
       supervisor(DevtonWeb.Endpoint, []),
-      supervisor(Devton.Workspaces.Supervisor, [])
+      supervisor(Devton.Workspaces.Supervisor, []),
+      supervisor(DevtonSlack.Manager, [])
     ]
 
     opts = [strategy: :one_for_one, name: Devton.Supervisor]
