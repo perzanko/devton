@@ -38,7 +38,8 @@ defmodule Devton.Workspaces do
           "identifier" => identifier,
           "token" => token,
           "enabled" => enabled,
-        }
+        },
+        metadata \\ %{}
       ) do
     uuid = UUID.uuid4()
 
@@ -50,7 +51,7 @@ defmodule Devton.Workspaces do
         identifier: identifier,
         enabled?: enabled,
       }
-      |> Router.dispatch()
+      |> Router.dispatch(metadata: metadata)
 
     case result do
       :ok ->
@@ -63,20 +64,20 @@ defmodule Devton.Workspaces do
     end
   end
 
-  def enable_workspace(%{"id" => uuid, "token" => token}) do
+  def enable_workspace(%{"id" => uuid, "token" => token}, metadata \\ %{}) do
     result =
       %EnableWorkspace{uuid: uuid, token: token}
-      |> Router.dispatch()
+      |> Router.dispatch(metadata: metadata)
     case result do
       :ok -> {:ok, true}
       reply -> reply
     end
   end
 
-  def disable_workspace(%{"id" => uuid}) do
+  def disable_workspace(%{"id" => uuid}, metadata \\ %{}) do
     result =
       %DisableWorkspace{uuid: uuid}
-      |> Router.dispatch()
+      |> Router.dispatch(metadata: metadata)
     case result do
       :ok -> {:ok, true}
       reply -> reply

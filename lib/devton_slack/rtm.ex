@@ -2,6 +2,11 @@ defmodule DevtonSlack.Rtm do
   use Slack
   require Logger
 
+  def send_message_to_channel(workspace_name, channel, message) do
+    pid = Process.whereis(String.to_atom(workspace_name <> "_channel"))
+    send pid, {:message, message, channel}
+  end
+
   def handle_connect(slack, state) do
     Logger.info("Connected as #{slack.me.name}")
     {:ok, state}
@@ -9,7 +14,7 @@ defmodule DevtonSlack.Rtm do
 
   def handle_event(message = %{type: "message"}, slack, state) do
     Logger.info "Got message '#{message.text}'"
-    send_message("I got a message!", message.channel, slack)
+#    send_message("I got a message!", message.channel, slack)
     {:ok, state}
   end
   def handle_event(_, _, state), do: {:ok, state}
