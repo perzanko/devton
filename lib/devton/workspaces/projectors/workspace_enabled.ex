@@ -16,7 +16,8 @@ defmodule Devton.Workspaces.Projectors.WorkspaceEnabled do
           :workspace,
           Changeset.change(
             workspace,
-            enabled: event.enabled?
+            enabled: event.enabled?,
+            token: event.token
           )
         )
       else

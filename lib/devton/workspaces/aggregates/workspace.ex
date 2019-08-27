@@ -38,28 +38,28 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
   end
 
   def execute(
-        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name, identifier: identifier},
-        %EnableWorkspace{uuid: uuid}
+        %Workspace{uuid: uuid} = workspace,
+        %EnableWorkspace{uuid: uuid, token: token}
       ) do
     %WorkspaceEnabled{
       uuid: uuid,
       enabled?: true,
-      identifier: identifier,
+      identifier: workspace.identifier,
       token: token,
-      name: name,
+      name: workspace.name,
     }
   end
 
   def execute(
-        %Workspace{uuid: uuid, enabled?: enabled, token: token, name: name, identifier: identifier},
+        %Workspace{uuid: uuid} = workspace,
         %DisableWorkspace{uuid: uuid}
       ) do
     %WorkspaceDisabled{
       uuid: uuid,
       enabled?: false,
-      token: token,
-      identifier: identifier,
-      name: name,
+      token: workspace.token,
+      identifier: workspace.identifier,
+      name: workspace.name,
     }
   end
 
@@ -70,9 +70,10 @@ defmodule Devton.Workspaces.Aggregates.Workspace do
         %WorkspaceEnabled{
           uuid: uuid,
           enabled?: enabled?,
+          token: token,
         }
       ) do
-    %Workspace{workspace | enabled?: enabled?}
+    %Workspace{workspace | enabled?: enabled?, token: token }
   end
 
   def apply(

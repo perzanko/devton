@@ -63,9 +63,9 @@ defmodule Devton.Workspaces do
     end
   end
 
-  def enable_workspace(%{"id" => uuid}) do
+  def enable_workspace(%{"id" => uuid, "token" => token}) do
     result =
-      %EnableWorkspace{uuid: uuid}
+      %EnableWorkspace{uuid: uuid, token: token}
       |> Router.dispatch()
     case result do
       :ok -> {:ok, true}

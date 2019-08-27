@@ -59,7 +59,7 @@ defmodule Devton.MixProject do
   defp aliases do
     [
       "read_store.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "read_store.reset": ["ecto.drop", "ecto.setup"],
+      "read_store.reset": ["ecto.drop", "read_store.setup"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
       test: ["read_store.setup", "test"]

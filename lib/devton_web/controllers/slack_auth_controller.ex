@@ -11,7 +11,10 @@ defmodule DevtonWeb.SlackAuthController do
       existing_workspace = Workspaces.get_workspace(%{"name" => workspace_details["team_name"]})
       case existing_workspace do
         {:ok, %Workspace{uuid: uuid}} ->
-          Workspaces.enable_workspace(%{"id" => uuid})
+          Workspaces.enable_workspace(%{
+            "id" => uuid,
+            "token" => workspace_details["bot"]["bot_access_token"],
+          })
         _ ->
           Workspaces.create_workspace(
             %{
@@ -23,7 +26,6 @@ defmodule DevtonWeb.SlackAuthController do
           )
       end
 
-      DevtonSlack.Manager.refresh()
       redirect(conn, external: "https://#{workspace_details["team_name"]}.slack.com/")
     end
   end
@@ -37,3 +39,5 @@ defmodule DevtonWeb.SlackAuthController do
     )
   end
 end
+
+
