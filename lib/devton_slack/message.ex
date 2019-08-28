@@ -26,4 +26,16 @@ Let's create your own *dev.to* newsletter!
 > It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every Monday*.
     "
   end
+
+  def unsubscribed do
+    ":white_check_mark: You have been successfully unsubscribed! "
+  end
+
+  def invalid_command do
+    "Command invalid. You can see available commands using `devton --help`"
+  end
+
+  def missing_parameters do
+    "Command invalid. Parameters are missing. You can check available parameters using `devton --help`"
+  end
 end
