@@ -23,7 +23,9 @@ defmodule Devton.Workspaces.WorkspacesTest do
   test "enables workspace with valid command" do
     workspace = Mother.Workspace.simple()
     {:ok, %Workspace{uuid: uuid}} = Workspaces.create_workspace(workspace)
-    assert {:ok, true} = Workspaces.enable_workspace(%{"id" => uuid, "token" => "test_token", "bot_token" => "test_bot_token"})
+    assert {:ok, true} = Workspaces.enable_workspace(
+             %{"id" => uuid, "token" => "test_token", "bot_token" => "test_bot_token"}
+           )
   end
 
   @tag :disable_workspace

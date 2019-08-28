@@ -14,9 +14,9 @@ defmodule Devton.Workspaces do
 
   def get_workspace(clause) do
     result = case clause do
-      %{ "id" => uuid } ->
+      %{"id" => uuid} ->
         Repo.get(Workspace, uuid)
-      %{ "name" => name } ->
+      %{"name" => name} ->
         Repo.get_by(Workspace, name: name)
       _ -> {:error, :invalid_query}
     end

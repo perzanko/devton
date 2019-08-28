@@ -19,7 +19,12 @@ defmodule DevtonSlack.Supervisor do
 
   # start Slack Bot using `start_link` and monitor its errors
   def init(workspace) do
-    Slack.Bot.start_link(DevtonSlack.Rtm, workspace, workspace.bot_token, %{ name: String.to_atom(workspace.name <> "_channel") })
+    Slack.Bot.start_link(
+      DevtonSlack.Rtm,
+      workspace,
+      workspace.bot_token,
+      %{name: String.to_atom(workspace.name <> "_channel")}
+    )
     |> handle_errors(workspace)
   end
 
@@ -43,7 +48,7 @@ defmodule DevtonSlack.Supervisor do
 
   defp reset(workspace, message) do
     Logger.warn("Starting workspace #{workspace.name} failed: #{message}")
-    Workspaces.disable_workspace(%{ "id" => workspace.uuid })
+    Workspaces.disable_workspace(%{"id" => workspace.uuid})
     :ignore
   end
 end

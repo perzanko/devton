@@ -44,16 +44,18 @@ defmodule DevtonSlack.Manager do
 
   defp start_all_bots() do
     Workspaces.get_workspaces()
-      |> Enum.filter(fn workspace -> workspace.enabled end)
-      |> Enum.map(fn workspace ->
-        atomized_name = String.to_atom(workspace.name)
-        processes =
-          if :erlang.whereis(atomized_name) == :undefined do
-            Logger.info("Starting Slack bot for following workspace: #{workspace.name}")
-            DevtonSlack.Supervisor.start_link(workspace)
-          end
-        processes
-      end)
+    |> Enum.filter(fn workspace -> workspace.enabled end)
+    |> Enum.map(
+         fn workspace ->
+           atomized_name = String.to_atom(workspace.name)
+           processes =
+             if :erlang.whereis(atomized_name) == :undefined do
+               Logger.info("Starting Slack bot for following workspace: #{workspace.name}")
+               DevtonSlack.Supervisor.start_link(workspace)
+             end
+           processes
+         end
+       )
 
   end
 

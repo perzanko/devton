@@ -10,7 +10,7 @@ defmodule Devton.Workspaces.Projectors.WorkspaceDisabled do
     %WorkspaceDisabled{} = event,
     _metadata,
     fn multi ->
-      with {:ok, %Workspace{} = workspace} <- Workspaces.get_workspace(%{ "id" => event.uuid }) do
+      with {:ok, %Workspace{} = workspace} <- Workspaces.get_workspace(%{"id" => event.uuid}) do
         Multi.update(
           multi,
           :workspace,

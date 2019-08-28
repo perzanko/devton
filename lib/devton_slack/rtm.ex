@@ -20,19 +20,19 @@ defmodule DevtonSlack.Rtm do
     cli_parser_result = Cli.parse_command(message.text)
     case cli_parser_result do
       {:ok, [:subscribe, cron, tags]} ->
-#       TODO: sub command dispatch
+        #       TODO: sub command dispatch
         indicate_typing(message.channel, slack)
-      {:ok, [:unsubscribe] } ->
-#       TODO: unsub command dispatch
+      {:ok, [:unsubscribe]} ->
+        #       TODO: unsub command dispatch
         indicate_typing(message.channel, slack)
-      {:ok, [:help] } ->
+      {:ok, [:help]} ->
         send_message(Message.help, message.channel, slack)
-      {:error, :missing_parameters } ->
+      {:error, :missing_parameters} ->
         send_message(Message.missing_parameters, message.channel, slack)
       {:error, _} ->
         send_message(Message.invalid_command, message.channel, slack)
     end
-#
+    #
     {:ok, state}
   end
   def handle_event(_, _, state), do: {:ok, state}
