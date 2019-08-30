@@ -11,11 +11,11 @@ Let's create your own *dev.to* newsletter!
     "
 > Usage
 > ```
-devton subscribe (--tags --day --time)
+devton subscribe (--tag --day --time)
 devton unsubscribe (--id)
 devton status
 
--t, --tags             # Subscription tags (eg. \"javascript,webdev\")
+-t, --tag             # Subscription tag (eg. \"javascript,webdev\")
 -d, --day              # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
 -tm, --time            # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
 --id                   # Subscription id
@@ -24,7 +24,7 @@ devton status
 >
 > Examples
 > ```
-devton subscribe --time 12:00 --day * --tags javascript,webdev
+devton subscribe --time 12:00 --day * --tag javascript,webdev
 ```
 > It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every day*.
 > ```

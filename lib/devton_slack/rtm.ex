@@ -20,10 +20,10 @@ defmodule DevtonSlack.Rtm do
       command = Cli.handle_command(message.text)
       Logger.info("Command: #{inspect(command)}")
       case command do
-        {:subscribe, %{tags: tags, time: time, day: day, }} ->
+        {:subscribe, %{tag: tag, time: time, day: day, }} ->
           #       TODO: sub command dispatch
           indicate_typing(message.channel, slack)
-        {:unsubscribe, %{tags: tags}} ->
+        {:unsubscribe, %{id: id}} ->
           #       TODO: unsub command dispatch
           indicate_typing(message.channel, slack)
         {:help} ->

@@ -39,7 +39,7 @@ defmodule DevtonSlack.Cli do
     {:invalid_command}
 
     iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir -d \"monday\" --time 10:00")
-    {:subscribe, %{ tags: "javascript,elixir", day: "monday", time: "10:00" }}
+    {:subscribe, %{ tag: "javascript,elixir", day: "monday", time: "10:00" }}
 
     iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir -d \"monday\" --time 10:00 --help")
     {:invalid_command}
@@ -123,14 +123,14 @@ defmodule DevtonSlack.Cli do
     iex> DevtonSlack.Cli.parse_args({ :subscribe, [] })
     {:subscribe, []}
 
-    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tags", "javascript,elixir", "-k"] })
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tag", "javascript,elixir", "-k"] })
     {:invalid_command}
 
-    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tags", "javascript,elixir"] })
-    {:subscribe, [tags: "javascript,elixir"]}
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tag", "javascript,elixir"] })
+    {:subscribe, [tag: "javascript,elixir"]}
 
     iex> DevtonSlack.Cli.parse_args({ :subscribe, ["-t", "javascript,elixir"] })
-    {:subscribe, [tags: "javascript,elixir"]}
+    {:subscribe, [tag: "javascript,elixir"]}
 
     iex> DevtonSlack.Cli.parse_args({ :unsubscribe, ["--id", "10"] })
     {:unsubscribe, [id: "10"]}
@@ -152,12 +152,12 @@ defmodule DevtonSlack.Cli do
               aliases: [
                 d: :day,
                 tm: :time,
-                t: :tags
+                t: :tag
               ],
               strict: [
                 day: :string,
                 time: :string,
-                tags: :string
+                tag: :string
               ]
             ]
           )
@@ -191,8 +191,8 @@ defmodule DevtonSlack.Cli do
     iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [ time: "10:00" ] })
     {:subscribe, %{ time: "10:00" }}
 
-    iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [ time: "10:00", tags: "javascript,elixir" ] })
-    {:subscribe, %{ time: "10:00", tags: "javascript,elixir" }}
+    iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [ time: "10:00", tag: "javascript,elixir" ] })
+    {:subscribe, %{ time: "10:00", tag: "javascript,elixir" }}
 
   """
   def transform_args_to_map(command_tuple) do
@@ -225,8 +225,8 @@ defmodule DevtonSlack.Cli do
     iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00", day: "monday" }})
     {:invalid_command}
 
-    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00", day: "monday", tags: "javascript" }})
-    {:subscribe, %{ time: "10:00", day: "monday", tags: "javascript" }}
+    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00", day: "monday", tag: "javascript" }})
+    {:subscribe, %{ time: "10:00", day: "monday", tag: "javascript" }}
 
     iex> DevtonSlack.Cli.validate_args_map({ :unsubscribe, %{}})
     {:invalid_command}
@@ -239,7 +239,7 @@ defmodule DevtonSlack.Cli do
     case command_tuple do
       {:subscribe, args} = command ->
         case Skooma.valid?(args, %{
-          tags: :string,
+          tag: :string,
           time: :string,
           day: :string,
         }) do
