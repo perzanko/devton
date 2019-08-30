@@ -15,25 +15,28 @@ defmodule DevtonSlack.Rtm do
   end
 
   def handle_event(message = %{type: "message"}, slack, state) do
-    Logger.info("Got message '#{message.text}' from user '#{message.user}'")
-
-    cli_parser_result = Cli.parse_command(message.text)
-    case cli_parser_result do
-      {:ok, [:subscribe, cron, tags]} ->
-        #       TODO: sub command dispatch
-        indicate_typing(message.channel, slack)
-      {:ok, [:unsubscribe]} ->
-        #       TODO: unsub command dispatch
-        indicate_typing(message.channel, slack)
-      {:ok, [:help]} ->
-        send_message(Message.help, message.channel, slack)
-      {:error, :missing_parameters} ->
-        send_message(Message.missing_parameters, message.channel, slack)
-      {:error, _} ->
-        send_message(Message.invalid_command, message.channel, slack)
+    try do
+      Logger.info("Got message '#{message.text}' from user '#{message.user}'")
+      command = Cli.handle_command(message.text)
+      Logger.info("Command: #{inspect(command)}")
+      case command do
+        {:subscribe, %{tags: tags, time: time, day: day, }} ->
+          #       TODO: sub command dispatch
+          indicate_typing(message.channel, slack)
+        {:unsubscribe, %{tags: tags}} ->
+          #       TODO: unsub command dispatch
+          indicate_typing(message.channel, slack)
+        {:help} ->
+          send_message(Message.help, message.channel, slack)
+        {:status} ->
+          send_message(Message.status, message.channel, slack)
+        {:invalid_command} ->
+          send_message(Message.invalid_command, message.channel, slack)
+      end
+      {:ok, state}
+    rescue
+      _ -> {:ok, state}
     end
-    #
-    {:ok, state}
   end
   def handle_event(_, _, state), do: {:ok, state}
 

@@ -11,19 +11,26 @@ Let's create your own *dev.to* newsletter!
     "
 > Usage
 > ```
-> devton subscribe [options]
-> devton unsubscribe
+devton subscribe (--tags --day --time)
+devton unsubscribe (--id)
+devton status
+
+-t, --tags             # Subscription tags (eg. \"javascript,webdev\")
+-d, --day              # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
+-tm, --time            # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
+--id                   # Subscription id
+-h, --help             # Show this screen
+```
 >
-> -c, --cron             # Cron configuration for newsletter
-> -t, --tags             # Subscription tags
-> -h, --help             # Show this screen
+> Examples
 > ```
->
-> Example
+devton subscribe --time 12:00 --day * --tags javascript,webdev
+```
+> It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every day*.
 > ```
-> devton subscribe --cron \"0 12 * * 1\" --tags \"javascript,webdev\"
-> ```
-> It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every Monday*.
+devton subscribe --time 8:00,21:00 --day monday,wednesday,friday --tags node,react,typescript
+```
+> It creates newsletter subscription for *node*, *react* and *typescript* tags and sets sending time *at 8:00 am and 9:00 pm on every Monday, Wednesday and Friday*.
     "
   end
 
@@ -35,7 +42,7 @@ Let's create your own *dev.to* newsletter!
     "Command invalid. You can see available commands using `devton --help`"
   end
 
-  def missing_parameters do
-    "Command invalid. Parameters are missing. You can check available parameters using `devton --help`"
+  def status do
+    "status"
   end
 end

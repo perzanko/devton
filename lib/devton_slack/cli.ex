@@ -1,153 +1,229 @@
 defmodule DevtonSlack.Cli do
   @doc ~S"""
-  Parses the given `line` into a command.
+  ## Examples
+
+    iex> DevtonSlack.Cli.handle_command("devton")
+    {:help}
+
+    iex> DevtonSlack.Cli.handle_command("devton help")
+    {:help}
+
+    iex> DevtonSlack.Cli.handle_command("devton -h")
+    {:help}
+
+    iex> DevtonSlack.Cli.handle_command("devton --help")
+    {:help}
+
+    iex> DevtonSlack.Cli.handle_command("devton status")
+    {:status}
+
+    iex> DevtonSlack.Cli.handle_command("test")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton test")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -e")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -e -t")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -t")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir -d \"monday\"")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir -d \"monday\" --time 10:00")
+    {:subscribe, %{ tags: "javascript,elixir", day: "monday", time: "10:00" }}
+
+    iex> DevtonSlack.Cli.handle_command("devton subscribe -t javascript,elixir -d \"monday\" --time 10:00 --help")
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.handle_command("devton unsubscribe --id 10")
+    {:unsubscribe, %{ id: "10" }}
+
+    iex> DevtonSlack.Cli.handle_command("devton unsubscribe --id \"10\"")
+    {:unsubscribe, %{ id: "10" }}
+
+  """
+  def handle_command(command) do
+     command
+     |> split_command
+     |> detect_command
+     |> parse_args
+     |> transform_args_to_map
+     |> validate_args_map
+  end
+
+  @doc ~S"""
+  Splits command to an list-like command
 
   ## Examples
 
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -t javascript,wfeda,ews -c \"0 12 * * 1\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript,wfeda,ews"]}
+    iex> DevtonSlack.Cli.split_command("devton subscribe")
+    ["devton", "subscribe"]
 
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -t \"javascript\" -c \"0 12 * * 1\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
+    iex> DevtonSlack.Cli.split_command("devton subscribe ")
+    ["devton", "subscribe"]
 
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --tags \"javascript,ruby\" -c \"0 12 * * 2\"")
-      {:ok, [:subscribe, "0 12 * * 2", "javascript,ruby"]}
+    iex> DevtonSlack.Cli.split_command("devton subscribe test")
+    ["devton", "subscribe", "test"]
 
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --tags \"javascript, ruby \" -c \"0 12 * * 2\"")
-      {:ok, [:subscribe, "0 12 * * 2", "javascript,ruby"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --tags \"javascript\" --cron \"0 12 * * 1\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -t \"javascript\" --cron \"0 12 * * 1\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -c \"0 12 * * 1\" -t \"javascript\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --cron \"0 12 * * 1\" -t \"javascript\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --cron \"0 12 * * 1\" --tags \"javascript\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -c \"0 12 * * 1\" --tags \"javascript\"")
-      {:ok, [:subscribe, "0 12 * * 1", "javascript"]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -h")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe --help")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton unsubscribe --help")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton unsubscribe -h")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton -h")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton --help")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("devton")
-      {:ok, [:help]}
-
-      iex> DevtonSlack.Cli.parse_command("")
-      {:error, :invalid_command}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -t \"javascript\" -c 0 12 * * 1\"")
-      {:error, :invalid_command}
-
-      iex> DevtonSlack.Cli.parse_command("devton subscribe -t javascript,grds,we -c 0 12 * * 1")
-      {:error, :invalid_command}
+    iex> DevtonSlack.Cli.split_command("devton \"subscribe test\"")
+    ["devton", "subscribe test"]
 
   """
-  def parse_command(command) do
-    case command
-         |> replace_spaces_by_dashes
-         |> String.split do
-      ["devton", "subscribe"] ->
-        {:error, :missing_parameters}
-      ["devton", "subscribe", "-c", cron, "-t", tags] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "--cron", cron, "-t", tags] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "--cron", cron, "--tags", tags] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "-c", cron, "--tags", tags] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "-t", tags, "-c", cron] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "--tags", tags, "-c", cron] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "--tags", tags, "--cron", cron] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "-t", tags, "--cron", cron] ->
-        {:ok, [:subscribe, convert_cron(cron), convert_tags(tags)]}
-      ["devton", "subscribe", "--help"] ->
-        {:ok, [:help]}
-      ["devton", "subscribe", "-h"] ->
-        {:ok, [:help]}
-      ["devton", "unsubscribe", "--help"] ->
-        {:ok, [:help]}
-      ["devton", "unsubscribe", "-h"] ->
-        {:ok, [:help]}
-      ["devton", "unsubscribe"] ->
-        {:ok, [:unsubscribe]}
-      ["devton", "-h"] ->
-        {:ok, [:help]}
-      ["devton", "--help"] ->
-        {:ok, [:help]}
-      ["devton"] ->
-        {:ok, [:help]}
-      _ ->
-        {:error, :invalid_command}
+  def split_command(command) do
+    OptionParser.split(command)
+  end
+
+  @doc ~S"""
+  ## Examples
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "subscribe"])
+    {:subscribe, []}
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "subscribe", "--test", "test"])
+    {:subscribe, [ "--test", "test" ]}
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "unsubscribe", "--test", "test", "test"])
+    {:unsubscribe, [ "--test", "test", "test" ]}
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "status", "--test", "test"])
+    {:status}
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "--help"])
+    {:help}
+
+    iex> DevtonSlack.Cli.detect_command(["devton", "--test", "test"])
+    {:invalid_command}
+
+  """
+  def detect_command(args_list) do
+    case args_list do
+      ["devton" | ["subscribe" | args]] -> {:subscribe, args}
+      ["devton" | ["unsubscribe" | args]] -> {:unsubscribe, args}
+      ["devton" | ["status" | args]] -> {:status}
+      ["devton", "--help"] -> {:help}
+      ["devton", "-h"] -> {:help}
+      ["devton", "help"] -> {:help}
+      ["devton"] -> {:help}
+      _ -> {:invalid_command}
     end
   end
 
-  defp replace_spaces_by_dashes(command) do
-    String.split(command, "\"")
-    |> Enum.with_index
-    |> Enum.map(
-         fn {x, i} ->
-           case i do
-             1 ->
-               join x
-             3 ->
-               join x
-             _ ->
-               x
-           end
-         end
-       )
-    |> Enum.reduce(
-         fn x, acc ->
-           "#{acc}\"#{x}"
-         end
-       )
+  @doc ~S"""
+  ## Examples
+
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, [] })
+    {:subscribe, []}
+
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tags", "javascript,elixir", "-k"] })
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["--tags", "javascript,elixir"] })
+    {:subscribe, [tags: "javascript,elixir"]}
+
+    iex> DevtonSlack.Cli.parse_args({ :subscribe, ["-t", "javascript,elixir"] })
+    {:subscribe, [tags: "javascript,elixir"]}
+
+    iex> DevtonSlack.Cli.parse_args({ :unsubscribe, ["--id", "10"] })
+    {:unsubscribe, [id: "10"]}
+
+    iex> DevtonSlack.Cli.parse_args({ :unsubscribe, ["-t", "javascript,elixir", "--time", "10:00"] })
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.parse_args({ :help })
+    {:help}
+
+  """
+  def parse_args(command_tuple) do
+    try do
+      case command_tuple do
+        {:subscribe, args} ->
+          {validated_args, _} = OptionParser.parse!(
+            args,
+            [
+              aliases: [
+                d: :day,
+                tm: :time,
+                t: :tags
+              ],
+              strict: [
+                day: :string,
+                time: :string,
+                tags: :string
+              ]
+            ]
+          )
+          {:subscribe, validated_args}
+        {:unsubscribe, args} ->
+          {validated_args, _} = OptionParser.parse!(
+            args,
+            [
+              strict: [
+                id: :string
+              ]
+            ]
+          )
+          {:unsubscribe, validated_args}
+        x -> x
+      end
+    rescue
+      _ -> {:invalid_command}
+    end
   end
 
-  defp convert_cron(str) do
-    str
-    |> String.replace("\\", "")
-    |> String.replace("\"", "")
-    |> String.replace("=", " ")
+  @doc ~S"""
+  ## Examples
+
+    iex> DevtonSlack.Cli.transform_args_to_map({ :help })
+    {:help}
+
+    iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [] })
+    {:subscribe, %{}}
+
+    iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [ time: "10:00" ] })
+    {:subscribe, %{ time: "10:00" }}
+
+    iex> DevtonSlack.Cli.transform_args_to_map({ :subscribe, [ time: "10:00", tags: "javascript,elixir" ] })
+    {:subscribe, %{ time: "10:00", tags: "javascript,elixir" }}
+
+  """
+  def transform_args_to_map(command_tuple) do
+    case command_tuple do
+      {cmd, args} ->
+        {cmd, Enum.into(args, %{})}
+      x ->
+        x
+    end
   end
 
-  defp convert_tags(str) do
-    str
-    |> String.replace("\\", "")
-    |> String.replace("\"", "")
-    |> String.replace("=", "")
-  end
-
-  defp join(a) do
-    a
-    |> String.trim
-    |> String.split
-    |> Enum.join("=")
+  def validate_args_map(command_tuple) do
+    case command_tuple do
+      {:subscribe, args} = command ->
+        case Skooma.valid?(args, %{
+          tags: :string,
+          time: :string,
+          day: :string,
+        }) do
+          {:error, _} -> {:invalid_command}
+          _ -> command
+        end
+      {:unsubscribe, args} = command ->
+        case Skooma.valid?(args, %{
+          id: :string,
+        }) do
+          {:error, _} -> {:invalid_command}
+          _ -> command
+        end
+      x ->
+        x
+    end
   end
 end

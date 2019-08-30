@@ -1,4 +1,5 @@
 %{
+  "arguments": {:hex, :arguments, "0.1.0", "b1ea58e190165df5a23b604595a612a589491ab14e0a9ed61155c76ce576db04", [:mix], [], "hexpm"},
   "certifi": {:hex, :certifi, "2.5.1", "867ce347f7c7d78563450a18a6a28a8090331e77fa02380b4a21962a65d36ee5", [:rebar3], [{:parse_trans, "~>3.3", [hex: :parse_trans, repo: "hexpm", optional: false]}], "hexpm"},
   "commanded": {:hex, :commanded, "0.19.1", "783eaa1e4213d6fd2e34cd10cf0742b06c049021db0c75e2ebd89bddd4181685", [:mix], [{:elixir_uuid, "~> 1.2", [hex: :elixir_uuid, repo: "hexpm", optional: false]}, {:jason, "~> 1.1", [hex: :jason, repo: "hexpm", optional: true]}, {:phoenix_pubsub, "~> 1.1", [hex: :phoenix_pubsub, repo: "hexpm", optional: true]}], "hexpm"},
   "commanded_ecto_projections": {:hex, :commanded_ecto_projections, "0.8.0", "3dd206877f492c0dd0764a2ecac60daf3bbf238ad62885d9754a528be1277944", [:mix], [{:commanded, ">= 0.18.0", [hex: :commanded, repo: "hexpm", optional: false]}, {:ecto, "~> 3.0", [hex: :ecto, repo: "hexpm", optional: false]}, {:ecto_sql, "~> 3.0", [hex: :ecto_sql, repo: "hexpm", optional: false]}, {:jason, "~> 1.1", [hex: :jason, repo: "hexpm", optional: true]}], "hexpm"},
