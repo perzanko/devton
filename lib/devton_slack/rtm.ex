@@ -21,16 +21,19 @@ defmodule DevtonSlack.Rtm do
       Logger.info("Command: #{inspect(command)}")
       case command do
         {:subscribe, %{tag: tag, time: time, day: day, }} ->
+          indicate_typing(message.channel, slack)
           #       TODO: sub command dispatch
-          indicate_typing(message.channel, slack)
         {:unsubscribe, %{id: id}} ->
-          #       TODO: unsub command dispatch
           indicate_typing(message.channel, slack)
+          #       TODO: unsub command dispatch
         {:help} ->
+          indicate_typing(message.channel, slack)
           send_message(Message.help, message.channel, slack)
         {:status} ->
+          indicate_typing(message.channel, slack)
           send_message(Message.status, message.channel, slack)
         {:invalid_command} ->
+          indicate_typing(message.channel, slack)
           send_message(Message.invalid_command, message.channel, slack)
       end
       {:ok, state}
