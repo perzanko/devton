@@ -204,6 +204,37 @@ defmodule DevtonSlack.Cli do
     end
   end
 
+  @doc ~S"""
+  ## Examples
+
+    iex> DevtonSlack.Cli.validate_args_map({ :help })
+    {:help}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :invalid_command })
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :status })
+    {:status}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{}})
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00" }})
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00", day: "monday" }})
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :subscribe, %{ time: "10:00", day: "monday", tags: "javascript" }})
+    {:subscribe, %{ time: "10:00", day: "monday", tags: "javascript" }}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :unsubscribe, %{}})
+    {:invalid_command}
+
+    iex> DevtonSlack.Cli.validate_args_map({ :unsubscribe, %{ id: "1" }})
+    {:unsubscribe, %{ id: "1" }}
+
+  """
   def validate_args_map(command_tuple) do
     case command_tuple do
       {:subscribe, args} = command ->
