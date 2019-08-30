@@ -16,9 +16,8 @@ defmodule DevtonSlack.Rtm do
 
   def handle_event(message = %{type: "message"}, slack, state) do
     try do
-      Logger.info("Got message '#{message.text}' from user '#{message.user}'")
       command = Cli.handle_command(message.text)
-      Logger.info("Command: #{inspect(command)}")
+      Logger.info("Message: '#{message.text}', Command: '#{inspect(command)}', channel '#{message.channel}'")
       case command do
         {:subscribe, %{tag: tag, time: time, day: day, }} ->
           indicate_typing(message.channel, slack)

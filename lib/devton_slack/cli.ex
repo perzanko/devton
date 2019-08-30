@@ -151,7 +151,7 @@ defmodule DevtonSlack.Cli do
             [
               aliases: [
                 d: :day,
-                tm: :time,
+                m: :time,
                 t: :tag
               ],
               strict: [
