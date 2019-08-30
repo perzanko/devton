@@ -10,7 +10,7 @@ defmodule DevtonSlack.Rtm do
   end
 
   def handle_connect(slack, state) do
-    Logger.info("Connected as #{slack.me.name}")
+    Logger.info("Connected with workspace '#{slack.team.name}' (#{inspect slack.process})")
     {:ok, state}
   end
 

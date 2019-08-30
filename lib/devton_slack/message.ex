@@ -9,33 +9,48 @@ Let's create your own *dev.to* newsletter!
 
   def help do
     "
-> Usage
+> *Usage*
 > ```
-devton subscribe (--tag --day --time)
-devton unsubscribe (--id)
-devton status
-
--t, --tag              # Subscription tag (eg. \"javascript,webdev\")
--d, --day              # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
--m, --time             # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
---id                   # Subscription id
--h, --help             # Show this screen
+devton subscribe (--tag --day --time)              # Create new subscription
+devton unsubscribe (--id)                          # Remove subscription
+devton status                                      # Show all active subscriptions
 ```
 >
-> Examples
+> *Options*
+> ```
+--tag, -t               # Subscription tag (eg. \"javascript,webdev\")
+--day, -d               # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
+--time, -m              # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
+--id                    # Subscription id
+--help, -h              # Show this screen
+```
+>
+> *Examples*
 > ```
 devton subscribe --time 12:00 --day * --tag javascript,webdev
 ```
-> It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every day*.
+> _It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every day*._
 > ```
 devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescript
 ```
-> It creates newsletter subscription for *node*, *react* and *typescript* tags and sets sending time *at 8:00 am and 9:00 pm on every Monday, Wednesday and Friday*.
+> _It creates newsletter subscription for *node*, *react* and *typescript* tags and sets sending time *at 8:00 am and 9:00 pm on every Monday, Wednesday and Friday*._
     "
   end
 
-  def unsubscribed do
-    ":white_check_mark: You have been successfully unsubscribed! "
+  def unsubscribed_success(subscription_id) do
+    ":white_check_mark: You have been successfully unsubscribed #{subscription_id}}!"
+  end
+
+  def unsubscribed_fail(subscription_id) do
+    "Subscription with id #{subscription_id} not found."
+  end
+
+  def subscribed_success do
+    ":white_check_mark: You have been successfully subscribed!"
+  end
+
+  def subscribed_fail do
+    "Unexpected error occured. Please try again later."
   end
 
   def invalid_command do
