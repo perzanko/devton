@@ -39,7 +39,9 @@ defmodule DevtonSlack.Manager do
   end
 
   defp poll(delay \\ @delay) do
-    Process.send_after(self(), :start_bots, delay)
+    if Mix.env() != :test do
+      Process.send_after(self(), :start_bots, delay)
+    end
   end
 
   defp start_all_bots() do

@@ -46,7 +46,9 @@ defmodule Devton.MixProject do
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
       {:commanded_ecto_projections, "~> 0.8"},
       {:skooma, "~> 0.2.0"},
-      {:slack, "~> 0.19.0"}
+      {:slack, "~> 0.19.0"},
+      {:quantum, "~> 2.3"},
+      {:timex, "~> 3.0"}
     ]
   end
 
@@ -60,6 +62,7 @@ defmodule Devton.MixProject do
     [
       "read_store.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "read_store.reset": ["ecto.drop", "read_store.setup"],
+      "read_store.migrate": ["ecto.migrate"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
       test: ["read_store.setup", "test"]

@@ -2,6 +2,7 @@ defmodule Devton.Router do
   use Commanded.Commands.Router
 
   alias Devton.Workspaces.Aggregates.Workspace
+  alias Devton.Library.Aggregates.Tag
 
   alias Devton.Workspaces.Commands.{
     CreateWorkspace,
@@ -9,8 +10,9 @@ defmodule Devton.Router do
     DisableWorkspace,
     }
 
-
-  middleware(Devton.Support.Middleware.ValidateCommand)
+  alias Devton.Library.Commands.{
+    CreateTag,
+    }
 
   dispatch(
     [
@@ -20,5 +22,13 @@ defmodule Devton.Router do
     ],
     to: Workspace,
     identity: :uuid
+  )
+
+  dispatch(
+    [
+      CreateTag,
+    ],
+    to: Tag,
+    identity: :id
   )
 end

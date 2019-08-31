@@ -39,3 +39,12 @@ config :slack,
        client_id: "739395409799.739716238054",
        client_secret: "5eda2093e92aba482bdd73ba52662af2",
        root_url: "http://localhost:4000/api/slack/auth"
+
+
+config :devton, Devton.Scheduler,
+      global: true,
+      debug_logging: false,
+      timezone: :utc,
+      jobs: [
+        {"0 0 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
+      ]

@@ -13,12 +13,6 @@ defmodule Devton.Workspaces.WorkspacesTest do
     assert is_binary(uuid) == true
   end
 
-  @tag :create_workspace
-  test "creates workspace with invalid command" do
-    params = Mother.Workspace.without_token()
-    assert {:error, _, _, _} = Workspaces.create_workspace(params)
-  end
-
   @tag :enable_workspace
   test "enables workspace with valid command" do
     workspace = Mother.Workspace.simple()

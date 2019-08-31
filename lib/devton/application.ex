@@ -10,7 +10,10 @@ defmodule Devton.Application do
       supervisor(Devton.Repo, []),
       supervisor(DevtonWeb.Endpoint, []),
       supervisor(Devton.Workspaces.Supervisor, []),
-      supervisor(DevtonSlack.Manager, [])
+      supervisor(Devton.Library.Supervisor, []),
+      supervisor(DevtonSlack.Manager, []),
+      supervisor(DevtonAggregator.TagsAggregator, []),
+      Devton.Scheduler,
     ]
 
     opts = [strategy: :one_for_one, name: Devton.Supervisor]
