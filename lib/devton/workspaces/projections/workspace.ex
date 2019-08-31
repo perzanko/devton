@@ -10,6 +10,6 @@ defmodule Devton.Workspaces.Projections.Workspace do
     field :identifier, :string
     field :enabled, :boolean
 
-    timestamps()
+    timestamps([type: :utc_datetime])
   end
 end

@@ -7,7 +7,7 @@ defmodule Devton.Repo.Migrations.AddLibraryTag do
       add :bg_color_hex, :string
       add :text_color_hex, :string
 
-      timestamps()
+      timestamps([type: :utc_datetime])
     end
   end
 

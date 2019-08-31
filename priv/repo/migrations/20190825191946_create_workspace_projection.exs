@@ -9,7 +9,7 @@ defmodule Devton.Repo.Migrations.CreateWorkspaceProjection do
       add :bot_token, :string
       add :enabled, :boolean
 
-      timestamps()
+      timestamps([type: :utc_datetime])
     end
   end
 

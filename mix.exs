@@ -65,7 +65,7 @@ defmodule Devton.MixProject do
       "read_store.migrate": ["ecto.migrate"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
-      test: ["read_store.setup", "test"]
+      test: ["read_store.reset", "test"]
     ]
   end
 end

@@ -7,7 +7,7 @@ defmodule Devton.Library.Projections.Tag do
     field :bg_color_hex, :string
     field :text_color_hex, :string
 
-    timestamps()
+    timestamps([type: :utc_datetime])
   end
 
   def changeset(tag, params \\ %{}) do

@@ -11,6 +11,7 @@ defmodule Devton.Library.Supervisor do
     children = [
       # Projectors
       worker(Projectors.TagCreated, [], id: :tag_created_projector),
+      worker(Projectors.ArticleCreated, [], id: :article_created_projector),
     ]
 
     supervise(children, strategy: :one_for_one)

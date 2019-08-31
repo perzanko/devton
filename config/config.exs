@@ -46,5 +46,6 @@ config :devton, Devton.Scheduler,
       debug_logging: false,
       timezone: :utc,
       jobs: [
-        {"0 0 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
+        {"0 2 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
+        {"0 4 * * *", {DevtonAggregator.ArticlesAggregator, :aggregate, []}},
       ]

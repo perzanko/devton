@@ -13,6 +13,7 @@ defmodule Devton.Application do
       supervisor(Devton.Library.Supervisor, []),
       supervisor(DevtonSlack.Manager, []),
       supervisor(DevtonAggregator.TagsAggregator, []),
+      supervisor(DevtonAggregator.ArticlesAggregator, []),
       Devton.Scheduler,
     ]
 
