@@ -11,8 +11,10 @@ defmodule Devton.Subscriptions.Supervisor do
     children = [
       # Event handlers
       worker(EventHandlers.SubscriptionCreated, [], id: :subscription_created_handler),
+      worker(EventHandlers.SubscriptionDeactivated, [], id: :subscription_deactivated_handler),
       # Projectors
       worker(Projectors.SubscriptionCreated, [], id: :subscription_created_projector),
+      worker(Projectors.SubscriptionDeactivated, [], id: :subscription_deactivated_projector),
 
       # Process managers
       worker(ProcessManagers.SubscriptionsSaga, [], id: :subscriptions_saga)

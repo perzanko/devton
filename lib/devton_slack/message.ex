@@ -38,7 +38,7 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def unsubscribed_success(subscription_id) do
-    ":white_check_mark: You have been successfully unsubscribed #{subscription_id}}!"
+    ":white_check_mark: You have been successfully unsubscribed `#{subscription_id}`!"
   end
 
   def unsubscribed_fail(subscription_id) do

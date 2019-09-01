@@ -1,56 +1,38 @@
 defmodule Devton.Router do
   use Commanded.Commands.Router
 
-  alias Devton.Workspaces.Aggregates.Workspace
-  alias Devton.Library.Aggregates.{Tag, Article}
-  alias Devton.Subscriptions.Aggregates.{Subscription}
-
-  alias Devton.Workspaces.Commands.{
-    CreateWorkspace,
-    EnableWorkspace,
-    DisableWorkspace,
-    }
-
-  alias Devton.Library.Commands.{
-    CreateTag,
-    CreateArticle,
-    }
-
-  alias Devton.Subscriptions.Commands.{
-    CreateSubscription,
-    }
-
   dispatch(
     [
-      CreateWorkspace,
-      EnableWorkspace,
-      DisableWorkspace,
+      Devton.Workspaces.Commands.CreateWorkspace,
+      Devton.Workspaces.Commands.EnableWorkspace,
+      Devton.Workspaces.Commands.DisableWorkspace,
     ],
-    to: Workspace,
+    to: Devton.Workspaces.Aggregates.Workspace,
     identity: :uuid
   )
 
   dispatch(
     [
-      CreateTag,
+      Devton.Library.Commands.CreateTag,
     ],
-    to: Tag,
+    to: Devton.Library.Aggregates.Tag,
     identity: :id
   )
 
   dispatch(
     [
-      CreateArticle,
+      Devton.Library.Commands.CreateArticle,
     ],
-    to: Article,
+    to: Devton.Library.Aggregates.Article,
     identity: :id
   )
 
   dispatch(
     [
-      CreateSubscription,
+      Devton.Subscriptions.Commands.CreateSubscription,
+      Devton.Subscriptions.Commands.DeactivateSubscription,
     ],
-    to: Subscription,
+    to: Devton.Subscriptions.Aggregates.Subscription,
     identity: :uuid
   )
 end

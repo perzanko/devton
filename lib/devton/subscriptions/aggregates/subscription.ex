@@ -10,8 +10,8 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
 
   alias __MODULE__
 
-  alias Devton.Subscriptions.Commands.{CreateSubscription}
-  alias Devton.Subscriptions.Events.{SubscriptionCreated}
+  alias Devton.Subscriptions.Commands.{CreateSubscription, DeactivateSubscription}
+  alias Devton.Subscriptions.Events.{SubscriptionCreated, SubscriptionDeactivated}
 
   def execute(
         %Subscription{uuid: nil},
@@ -37,6 +37,22 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
     }
   end
 
+  def execute(
+        %Subscription{uuid: uuid} = subscription,
+        %DeactivateSubscription{uuid: uuid}
+      ) do
+    %SubscriptionDeactivated{
+      uuid: uuid,
+      is_active: false,
+      cron_tabs: subscription.cron_tabs,
+      started_at: subscription.started_at,
+      workspace: subscription.workspace,
+      user: subscription.user,
+      tags: subscription.tags,
+      sent_articles: subscription.sent_articles
+    }
+  end
+
   def apply(
         %Subscription{uuid: nil} = subscription,
         %SubscriptionCreated{} = subscription_created
@@ -52,6 +68,17 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
       user: subscription_created.user,
       tags: subscription_created.tags,
       sent_articles: subscription_created.sent_articles
+    }
+  end
+
+  def apply(
+        %Subscription{uuid: uuid} = subscription,
+        %SubscriptionDeactivated{uuid: uuid} = subscription_deactivated
+      ) do
+    %Subscription{
+      subscription
+    |
+      is_active: false,
     }
   end
 end

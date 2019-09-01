@@ -4,9 +4,7 @@ defmodule Devton.Subscriptions.EventHandlers.SubscriptionCreated do
   alias Devton.Subscriptions.Events.SubscriptionCreated
 
   def handle(%SubscriptionCreated{} = event, metadata) do
-    IO.inspect(event)
     send_subscribed_message(event.workspace["name"], event.user["id"], event.tags)
-    IO.inspect(event);
     :ok
   end
 

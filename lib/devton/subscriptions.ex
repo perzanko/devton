@@ -8,6 +8,7 @@ defmodule Devton.Subscriptions do
 
   alias Devton.Subscriptions.Commands.{
     CreateSubscription,
+    DeactivateSubscription,
     }
 
   alias Devton.Subscriptions.Projections.Subscription
@@ -15,7 +16,7 @@ defmodule Devton.Subscriptions do
 
   def get_subscription(clause) do
     result = case clause do
-      %{"id" => uuid} ->
+      %{"uuid" => uuid} ->
         Repo.get(Subscription, uuid)
       _ -> {:error, :invalid_query}
     end
@@ -76,6 +77,20 @@ defmodule Devton.Subscriptions do
             }
           reply -> reply
         end
+      reply -> reply
+    end
+  end
+
+  def deactivate_subscription(%{"uuid" => uuid}, metadata \\ %{}) do
+    result =
+      %DeactivateSubscription{uuid: uuid}
+      |> Router.dispatch(metadata: metadata)
+    case result do
+      :ok ->
+        {
+          :ok,
+          true
+        }
       reply -> reply
     end
   end

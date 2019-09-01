@@ -48,7 +48,7 @@ defmodule DevtonSlack.Supervisor do
 
   defp reset(workspace, message) do
     Logger.warn("Starting workspace #{workspace.name} failed: #{message}")
-    Workspaces.disable_workspace(%{"id" => workspace.uuid})
+    Workspaces.disable_workspace(%{"uuid" => workspace.uuid})
     :ignore
   end
 end

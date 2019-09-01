@@ -9,11 +9,13 @@ defmodule Devton.Subscriptions.ProcessManagers.SubscriptionsSaga do
   alias __MODULE__
 
   alias Devton.Subscriptions.Events.{
-    SubscriptionCreated
+    SubscriptionCreated,
+    SubscriptionDeactivated,
     }
 
   alias Devton.Subscriptions.Commands.{}
 
   def interested?(%SubscriptionCreated{}), do: false
+  def interested?(%SubscriptionDeactivated{}), do: false
   def interested?(_event), do: false
 end

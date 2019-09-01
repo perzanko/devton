@@ -8,13 +8,12 @@ defmodule DevtonWeb.SlackAuthController do
 
   def index(conn, %{"code" => code, "state" => state}) do
     with %{"ok" => true} = workspace_details <- authorize(code) do
-      IO.inspect(workspace_details)
       existing_workspace = Workspaces.get_workspace(%{"name" => workspace_details["team_name"]})
       case existing_workspace do
         {:ok, %Workspace{uuid: uuid}} ->
           Workspaces.enable_workspace(
             %{
-              "id" => uuid,
+              "uuid" => uuid,
               "token" => workspace_details["access_token"],
               "bot_token" => workspace_details["bot"]["bot_access_token"],
             },

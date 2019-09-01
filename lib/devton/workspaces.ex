@@ -14,7 +14,7 @@ defmodule Devton.Workspaces do
 
   def get_workspace(clause) do
     result = case clause do
-      %{"id" => uuid} ->
+      %{"uuid" => uuid} ->
         Repo.get(Workspace, uuid)
       %{"name" => name} ->
         Repo.get_by(Workspace, name: name)
@@ -66,7 +66,7 @@ defmodule Devton.Workspaces do
     end
   end
 
-  def enable_workspace(%{"id" => uuid, "token" => token, "bot_token" => bot_token}, metadata \\ %{}) do
+  def enable_workspace(%{"uuid" => uuid, "token" => token, "bot_token" => bot_token}, metadata \\ %{}) do
     result =
       %EnableWorkspace{uuid: uuid, token: token, bot_token: bot_token}
       |> Router.dispatch(metadata: metadata)
@@ -76,7 +76,7 @@ defmodule Devton.Workspaces do
     end
   end
 
-  def disable_workspace(%{"id" => uuid}, metadata \\ %{}) do
+  def disable_workspace(%{"uuid" => uuid}, metadata \\ %{}) do
     result =
       %DisableWorkspace{uuid: uuid}
       |> Router.dispatch(metadata: metadata)

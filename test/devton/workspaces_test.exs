@@ -18,7 +18,7 @@ defmodule Devton.Workspaces.WorkspacesTest do
     workspace = Mother.Workspace.simple()
     {:ok, %Workspace{uuid: uuid}} = Workspaces.create_workspace(workspace)
     assert {:ok, true} = Workspaces.enable_workspace(
-             %{"id" => uuid, "token" => "test_token", "bot_token" => "test_bot_token"}
+             %{"uuid" => uuid, "token" => "test_token", "bot_token" => "test_bot_token"}
            )
   end
 
@@ -26,7 +26,7 @@ defmodule Devton.Workspaces.WorkspacesTest do
   test "disables workspace with valid command" do
     workspace = Mother.Workspace.simple()
     {:ok, %Workspace{uuid: uuid}} = Workspaces.create_workspace(workspace)
-    assert {:ok, true} = Workspaces.disable_workspace(%{"id" => uuid})
+    assert {:ok, true} = Workspaces.disable_workspace(%{"uuid" => uuid})
   end
 
   @tag :get_workspace
@@ -34,7 +34,7 @@ defmodule Devton.Workspaces.WorkspacesTest do
     workspace = Mother.Workspace.simple()
     {:ok, %Workspace{uuid: uuid}} = Workspaces.create_workspace(workspace)
     :timer.sleep(500)
-    assert {:ok, %Workspace{uuid: uuid, name: name}} = Workspaces.get_workspace(%{"id" => uuid})
+    assert {:ok, %Workspace{uuid: uuid, name: name}} = Workspaces.get_workspace(%{"uuid" => uuid})
     assert name = Map.get(workspace, "name")
   end
 

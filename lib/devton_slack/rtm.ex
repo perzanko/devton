@@ -18,14 +18,6 @@ defmodule DevtonSlack.Rtm do
     try do
       command = Cli.handle_command(message.text)
       Logger.info("Message: '#{message.text}', Command: '#{inspect(command)}', channel '#{message.channel}'")
-      IO.inspect(message)
-      IO.inspect(%{
-        user_name: slack.users[message.user].name,
-        user_id: message.user,
-        user_tz: slack.users[message.user].tz,
-        workspace_id: slack.team.id,
-        workspace_name: slack.team.name,
-      })
       case command do
         {:subscribe, %{tag: tag, time: time, day: day}} ->
           result = Devton.Subscriptions.create_subscription(%{
@@ -38,13 +30,14 @@ defmodule DevtonSlack.Rtm do
             "workspace_id" => slack.team.id,
             "workspace_name" => slack.team.name,
           })
-          IO.inspect(result)
           case result do
-            {:error, :invalid_day} -> send_message(Message.invalid_day, message.channel, slack)
-            {:error, :invalid_time} -> send_message(Message.invalid_time, message.channel, slack)
-            {:error, _} -> send_message(Message.invalid_command, message.channel, slack)
+            {:error, :invalid_day} ->
+              send_message(Message.invalid_day, message.channel, slack)
+            {:error, :invalid_time} ->
+              send_message(Message.invalid_time, message.channel, slack)
+            {:error, _} ->
+              send_message(Message.invalid_command, message.channel, slack)
             x ->
-              IO.inspect(x)
               indicate_typing(message.channel, slack)
           end
         {:unsubscribe, %{id: id}} ->
@@ -59,7 +52,6 @@ defmodule DevtonSlack.Rtm do
             "user_id" => message.user,
             "workspace_id" => slack.team.id,
           })
-          IO.inspect(Message.status(subscriptions))
           send_message(Message.status(subscriptions), message.channel, slack)
         {:invalid_command} ->
           indicate_typing(message.channel, slack)
