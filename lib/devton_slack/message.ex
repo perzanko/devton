@@ -27,9 +27,9 @@ devton status                                      # Show all active subscriptio
 >
 > *Examples*
 > ```
-devton subscribe --time 12:00 --day * --tag javascript,webdev
+devton subscribe --time 12:00 --day monday --tag javascript,webdev
 ```
-> _It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every day*._
+> _It creates newsletter subscription for *javascript* and *webdev* tags and sets sending time *at 12:00 pm on every Monday*._
 > ```
 devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescript
 ```
@@ -66,11 +66,12 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def status(subscriptions) do
-     List.foldl(subscriptions, "", fn subscription, acc ->
+     List.foldl(subscriptions, "Here is the list of all your active subscriptions: \n", fn subscription, acc ->
       acc <> "
-• `#{subscription.uuid}`
+> ID: `#{subscription.uuid}`
 > Tags: *#{Enum.join subscription.tags, ", "}*
-> Cron: #{Enum.join subscription.cron_tabs, ", "}"
+> Cron: #{subscription.cron_tabs |> Enum.map(fn x -> "`#{x}`" end) |> Enum.join ", "}
+"
     end)
   end
 end

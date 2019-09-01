@@ -10,7 +10,7 @@ defmodule Devton.Subscriptions.Projectors.SubscriptionDeactivated do
     _metadata,
     fn multi ->
       subscription = Devton.Repo.get!(Subscription, event.uuid)
-      Ecto.Multi.insert(
+      Ecto.Multi.update(
         multi,
         :subscription,
         Ecto.Changeset.change(subscription, is_active: event.is_active)

@@ -20,16 +20,18 @@ defmodule DevtonSlack.Rtm do
       Logger.info("Message: '#{message.text}', Command: '#{inspect(command)}', channel '#{message.channel}'")
       case command do
         {:subscribe, %{tag: tag, time: time, day: day}} ->
-          result = Devton.Subscriptions.create_subscription(%{
-            "tags" => tag,
-            "time" => time,
-            "day" => day,
-            "user_name" => slack.users[message.user].name,
-            "user_id" => message.user,
-            "user_tz" => slack.users[message.user].tz,
-            "workspace_id" => slack.team.id,
-            "workspace_name" => slack.team.name,
-          })
+          result = Devton.Subscriptions.create_subscription(
+            %{
+              "tags" => tag,
+              "time" => time,
+              "day" => day,
+              "user_name" => slack.users[message.user].name,
+              "user_id" => message.user,
+              "user_tz" => slack.users[message.user].tz,
+              "workspace_id" => slack.team.id,
+              "workspace_name" => slack.team.name,
+            }
+          )
           case result do
             {:error, :invalid_day} ->
               send_message(Message.invalid_day, message.channel, slack)
@@ -42,16 +44,18 @@ defmodule DevtonSlack.Rtm do
           end
         {:unsubscribe, %{id: id}} ->
           indicate_typing(message.channel, slack)
-          #       TODO: unsub command dispatch
+          Devton.Subscriptions.deactivate_subscription(%{"uuid" => id})
         {:help} ->
           indicate_typing(message.channel, slack)
           send_message(Message.help, message.channel, slack)
         {:status} ->
           indicate_typing(message.channel, slack)
-          subscriptions = Devton.Subscriptions.get_subscriptions(%{
-            "user_id" => message.user,
-            "workspace_id" => slack.team.id,
-          })
+          subscriptions = Devton.Subscriptions.get_subscriptions(
+            %{
+              "user_id" => message.user,
+              "workspace_id" => slack.team.id,
+            }
+          )
           send_message(Message.status(subscriptions), message.channel, slack)
         {:invalid_command} ->
           indicate_typing(message.channel, slack)
