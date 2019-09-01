@@ -9,16 +9,20 @@ defmodule Devton.Library.Projectors.TagCreated do
     %TagCreated{} = event,
     _metadata,
     fn multi ->
-      changeset = Tag.changeset(%Tag{ id: event.id, }, %{
-        name: event.name,
-        bg_color_hex: event.bg_color_hex,
-        text_color_hex: event.text_color_hex
-      })
+      changeset = Tag.changeset(
+        %Tag{id: event.id},
+        %{
+          name: event.name,
+          bg_color_hex: event.bg_color_hex,
+          text_color_hex: event.text_color_hex
+        }
+      )
       Ecto.Multi.insert_or_update(
         multi,
         :tag,
         changeset,
-        on_conflict: :nothing
+        on_conflict: :replace_all_except_primary_key,
+        conflict_target: :id
       )
     end
   )

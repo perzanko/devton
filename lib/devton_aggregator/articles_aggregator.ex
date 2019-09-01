@@ -15,7 +15,7 @@ defmodule DevtonAggregator.ArticlesAggregator do
   def handle_cast({:aggregate_single, tag, index}, state) do
     Task.async(
       fn ->
-        :timer.sleep(index * 100)
+        :timer.sleep(index * 200)
         Logger.info("ArticlesAggregator, aggregating: #{tag}")
         try do
           HTTPoison.get!("https://dev.to/api/articles?top=5&tag=#{tag}").body

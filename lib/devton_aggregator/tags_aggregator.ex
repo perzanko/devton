@@ -13,28 +13,39 @@ defmodule DevtonAggregator.TagsAggregator do
   end
 
   def handle_cast({:aggregate_single, page_id}, state) do
-    Task.async(fn ->
-      :timer.sleep(page_id * 100)
-      Logger.info("TagsAggregator, aggregating: #{page_id}")
-      HTTPoison.get!("https://dev.to/api/tags?page=#{page_id}").body
-      |> Poison.decode!
-
-    end)
+    Task.async(
+      fn ->
+        :timer.sleep(page_id * 200)
+        Logger.info("TagsAggregator, aggregating: #{page_id}")
+        try do
+          HTTPoison.get!("https://dev.to/api/tags?page=#{page_id}").body
+          |> Poison.decode!
+        rescue
+          _ -> []
+        end
+      end
+    )
     {:noreply, state}
   end
 
   def handle_info({_, result}, state) do
-    Enum.each(result, fn tag ->
-      Library.create_tag(tag)
-    end)
+    Enum.each(
+      result,
+      fn tag ->
+        Library.create_tag tag
+      end
+    )
     {:noreply, state}
   end
   def handle_info(_, state), do: {:noreply, state}
 
   def aggregate() do
     Logger.info("TagsAggregator start aggregate")
-    Enum.each(1..4000, fn x ->
-      Task.async fn -> GenServer.cast(__MODULE__, {:aggregate_single, x}) end
-    end)
+    Enum.each(
+      1..4000,
+      fn x ->
+        Task.async fn -> GenServer.cast(__MODULE__, {:aggregate_single, x}) end
+      end
+    )
   end
 end
