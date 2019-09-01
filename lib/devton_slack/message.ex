@@ -45,8 +45,8 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
     "Subscription with id #{subscription_id} not found."
   end
 
-  def subscribed_success do
-    ":white_check_mark: You have been successfully subscribed!"
+  def subscribed_success(tags) do
+    ":white_check_mark: You have been successfully subscribed! Tags: *#{Enum.join tags, ", "}*"
   end
 
   def subscribed_fail do
