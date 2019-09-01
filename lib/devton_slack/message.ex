@@ -57,6 +57,14 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
     "Command invalid. You can see available commands using `devton --help`"
   end
 
+  def invalid_day do
+    "Invalid `--day` argument"
+  end
+
+  def invalid_time do
+    "Invalid `--time` argument"
+  end
+
   def status do
     "status"
   end

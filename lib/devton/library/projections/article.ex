@@ -2,7 +2,6 @@ defmodule Devton.Library.Projections.Article do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "article" do
     field :type_of, :string
     field :title, :string

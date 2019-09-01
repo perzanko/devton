@@ -11,6 +11,7 @@ defmodule Devton.Application do
       supervisor(DevtonWeb.Endpoint, []),
       supervisor(Devton.Workspaces.Supervisor, []),
       supervisor(Devton.Library.Supervisor, []),
+      supervisor(Devton.Subscriptions.Supervisor, []),
       supervisor(DevtonSlack.Manager, []),
       supervisor(DevtonAggregator.TagsAggregator, []),
       supervisor(DevtonAggregator.ArticlesAggregator, []),

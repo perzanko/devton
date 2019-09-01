@@ -3,6 +3,7 @@ defmodule Devton.Router do
 
   alias Devton.Workspaces.Aggregates.Workspace
   alias Devton.Library.Aggregates.{Tag, Article}
+  alias Devton.Subscriptions.Aggregates.{Subscription}
 
   alias Devton.Workspaces.Commands.{
     CreateWorkspace,
@@ -13,6 +14,10 @@ defmodule Devton.Router do
   alias Devton.Library.Commands.{
     CreateTag,
     CreateArticle,
+    }
+
+  alias Devton.Subscriptions.Commands.{
+    CreateSubscription,
     }
 
   dispatch(
@@ -39,5 +44,13 @@ defmodule Devton.Router do
     ],
     to: Article,
     identity: :id
+  )
+
+  dispatch(
+    [
+      CreateSubscription,
+    ],
+    to: Subscription,
+    identity: :uuid
   )
 end

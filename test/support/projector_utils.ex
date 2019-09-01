@@ -6,6 +6,9 @@ defmodule Devton.Test.ProjectorUtils do
     truncate_readstore_tables_sql = """
     TRUNCATE TABLE
       workspace,
+      subscription,
+      article,
+      tag,
       projection_versions
     RESTART IDENTITY
     CASCADE;
