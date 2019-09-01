@@ -55,7 +55,12 @@ defmodule DevtonSlack.Rtm do
           send_message(Message.help, message.channel, slack)
         {:status} ->
           indicate_typing(message.channel, slack)
-          send_message(Message.status, message.channel, slack)
+          subscriptions = Devton.Subscriptions.get_subscriptions(%{
+            "user_id" => message.user,
+            "workspace_id" => slack.team.id,
+          })
+          IO.inspect(Message.status(subscriptions))
+          send_message(Message.status(subscriptions), message.channel, slack)
         {:invalid_command} ->
           indicate_typing(message.channel, slack)
           send_message(Message.invalid_command, message.channel, slack)

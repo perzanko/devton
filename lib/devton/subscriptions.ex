@@ -1,6 +1,8 @@
 defmodule Devton.Subscriptions do
   @moduledoc false
 
+  import Ecto.Query, only: [from: 2]
+
   alias Devton.Repo
   alias Devton.Router
 
@@ -25,9 +27,16 @@ defmodule Devton.Subscriptions do
     end
   end
 
-  def get_subscriptions() do
-    Repo.all(Subscription)
+  def get_subscriptions(%{"workspace_id" => workspace_id, "user_id" => user_id}) do
+    Repo.all(
+      from s in Subscription,
+      select: s,
+      where: s.is_active == true and
+             fragment("?->>'id'", s.workspace) == ^workspace_id and
+             fragment("?->>'id'", s.user) == ^user_id
+    )
   end
+  def get_subscriptions(), do: Repo.all(Subscription)
 
   def create_subscription(
         %{

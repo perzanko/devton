@@ -65,7 +65,12 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
     "Invalid `--time` argument"
   end
 
-  def status do
-    "status"
+  def status(subscriptions) do
+     List.foldl(subscriptions, "", fn subscription, acc ->
+      acc <> "
+• `#{subscription.uuid}`
+> Tags: *#{Enum.join subscription.tags, ", "}*
+> Cron: #{Enum.join subscription.cron_tabs, ", "}"
+    end)
   end
 end
