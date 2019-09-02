@@ -29,7 +29,6 @@ defmodule DevtonSlack.Supervisor do
   end
 
   defp handle_errors({:ok, _} = response, workspace) do
-    Logger.info("Worker running for #{workspace.name}")
     response
   end
 

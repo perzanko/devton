@@ -39,6 +39,13 @@ defmodule Devton.Subscriptions do
              fragment("?->>'id'", s.user) == ^user_id
     )
   end
+  def get_subscriptions(%{ "active" => true }) do
+    Repo.all(
+      from s in Subscription,
+      select: s,
+      where: s.is_active == true
+    )
+  end
   def get_subscriptions(), do: Repo.all(Subscription)
 
   def create_subscription(

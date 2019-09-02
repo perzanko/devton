@@ -2,6 +2,8 @@ defmodule Devton.Subscriptions.EventHandlers.SendPerformed do
   use Commanded.Event.Handler, name: "Subscriptions.EventHandlers.SendPerformed"
 
   alias Devton.Subscriptions.Events.SendPerformed
+  alias Devton.{Subscriptions, Library}
+  alias DevtonSlack.{Rtm, Message}
 
   def handle(%SendPerformed{} = event, metadata) do
     if event.article_id != nil do
@@ -14,12 +16,12 @@ defmodule Devton.Subscriptions.EventHandlers.SendPerformed do
     Task.async(
       fn ->
         :timer.sleep(500)
-        {:ok, subscription} = Devton.Subscriptions.get_subscription(%{"uuid" => event.uuid})
-        {:ok, article} = Devton.Library.get_article(%{"id" => event.article_id})
-        DevtonSlack.Rtm.send_message_to_channel(
+        {:ok, subscription} = Subscriptions.get_subscription(%{"uuid" => event.uuid})
+        {:ok, article} = Library.get_article(%{"id" => event.article_id})
+        Rtm.send_message_to_channel(
           subscription.workspace["name"],
           subscription.user["id"],
-          DevtonSlack.Message.article(article)
+          Message.article(article)
         )
       end
     )

@@ -2,6 +2,7 @@ defmodule Devton.Workspaces.EventHandlers.WorkspaceCreated do
   use Commanded.Event.Handler, name: "Workspaces.EventHandlers.WorkspaceCreated"
 
   alias Devton.Workspaces.Events.WorkspaceCreated
+  alias DevtonSlack.{Manager, Rtm, Message}
 
   def handle(%WorkspaceCreated{} = event, metadata) do
     refresh_bots()
@@ -13,7 +14,7 @@ defmodule Devton.Workspaces.EventHandlers.WorkspaceCreated do
     spawn(
       fn ->
         :timer.sleep(1000);
-        DevtonSlack.Manager.refresh
+        Manager.refresh
       end
     )
   end
@@ -22,10 +23,10 @@ defmodule Devton.Workspaces.EventHandlers.WorkspaceCreated do
     spawn(
       fn ->
         :timer.sleep(2000);
-        DevtonSlack.Rtm.send_message_to_channel(
+        Rtm.send_message_to_channel(
           workspace_name,
           user_id,
-          DevtonSlack.Message.welcome(user_id) <> DevtonSlack.Message.help
+          Message.welcome(user_id) <> Message.help
         )
       end
     )
