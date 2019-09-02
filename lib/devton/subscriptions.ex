@@ -5,10 +5,12 @@ defmodule Devton.Subscriptions do
 
   alias Devton.Repo
   alias Devton.Router
+  alias Devton.Library
 
   alias Devton.Subscriptions.Commands.{
     CreateSubscription,
     DeactivateSubscription,
+    PerformSend,
     }
 
   alias Devton.Subscriptions.Projections.Subscription
@@ -81,6 +83,30 @@ defmodule Devton.Subscriptions do
     end
   end
 
+  def perform_send(%{ "uuid" => uuid }, metadata \\ %{}) do
+    subscription = Repo.get!(Subscription, uuid)
+    sent_articles = get_sent_articles_to_user(subscription.user["id"])
+    suggested_tags_articles = Library.get_suggested_articles(subscription.tags)
+    suggested_other_articles = Library.get_suggested_articles()
+
+    result =
+      %PerformSend{
+        uuid: uuid,
+        sent_articles: sent_articles,
+        suggested_tags_articles: suggested_tags_articles,
+        suggested_other_articles: suggested_other_articles,
+      }
+      |> Router.dispatch(metadata: metadata)
+    case result do
+      :ok ->
+        {
+          :ok,
+          true
+        }
+      reply -> reply
+    end
+  end
+
   def deactivate_subscription(%{"uuid" => uuid}, metadata \\ %{}) do
     result =
       %DeactivateSubscription{uuid: uuid}
@@ -93,5 +119,14 @@ defmodule Devton.Subscriptions do
         }
       reply -> reply
     end
+  end
+
+  defp get_sent_articles_to_user(user_id) do
+    query = from s in Subscription,
+                 select: [s.sent_articles],
+                 where: fragment("?->>'id'", s.user) == ^user_id
+    Repo.all(query)
+    |> Enum.map(fn [x | _] -> x end)
+    |> List.flatten
   end
 end

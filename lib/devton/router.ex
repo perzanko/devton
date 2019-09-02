@@ -31,6 +31,7 @@ defmodule Devton.Router do
     [
       Devton.Subscriptions.Commands.CreateSubscription,
       Devton.Subscriptions.Commands.DeactivateSubscription,
+      Devton.Subscriptions.Commands.PerformSend,
     ],
     to: Devton.Subscriptions.Aggregates.Subscription,
     identity: :uuid

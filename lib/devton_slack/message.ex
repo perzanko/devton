@@ -74,4 +74,8 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
 "
     end)
   end
+
+  def article(article) do
+    article.url
+  end
 end

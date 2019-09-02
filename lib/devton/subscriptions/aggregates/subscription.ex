@@ -10,8 +10,8 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
 
   alias __MODULE__
 
-  alias Devton.Subscriptions.Commands.{CreateSubscription, DeactivateSubscription}
-  alias Devton.Subscriptions.Events.{SubscriptionCreated, SubscriptionDeactivated}
+  alias Devton.Subscriptions.Commands.{CreateSubscription, DeactivateSubscription, PerformSend}
+  alias Devton.Subscriptions.Events.{SubscriptionCreated, SubscriptionDeactivated, SendPerformed}
 
   def execute(
         %Subscription{uuid: nil},
@@ -53,6 +53,41 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
     }
   end
 
+  def execute(
+        %Subscription{uuid: uuid, is_active: false} = subscription,
+        %PerformSend{uuid: uuid} = perform_send
+      ) do
+    {:error, :subscription_is_not_active}
+  end
+
+  def execute(
+        %Subscription{uuid: uuid, is_active: true} = subscription,
+        %PerformSend{
+          uuid: uuid,
+          sent_articles: sent_articles_to_user,
+          suggested_tags_articles: suggested_tags_articles,
+          suggested_other_articles: suggested_other_articles
+        }
+      ) do
+    {:ok, sent_at} = DateTime.now("Etc/UTC")
+    sent_articles_ids = sent_articles_to_user |> Enum.map(fn article -> article["id"] end)
+    suggested_tags_articles ++ suggested_other_articles
+    |> List.foldl(
+         %SendPerformed{uuid: uuid, article_id: nil, sent_at: sent_at},
+         fn article_to_send, event ->
+           case event.article_id == nil do
+             false -> event
+             true ->
+               if Enum.member?(sent_articles_ids, article_to_send.id) do
+                 event
+               else
+                 %SendPerformed{event | article_id: article_to_send.id }
+               end
+           end
+         end
+       )
+  end
+
   def apply(
         %Subscription{uuid: nil} = subscription,
         %SubscriptionCreated{} = subscription_created
@@ -79,6 +114,23 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
       subscription
     |
       is_active: false,
+    }
+  end
+
+  def apply(
+        %Subscription{uuid: uuid, is_active: true} = subscription,
+        %SendPerformed{uuid: uuid, article_id: nil, sent_at: nil} = send_performed
+      ) do
+    subscription
+  end
+  def apply(
+        %Subscription{uuid: uuid, is_active: true} = subscription,
+        %SendPerformed{uuid: uuid, article_id: article_id, sent_at: sent_at} = send_performed
+      ) do
+    %Subscription{
+      subscription
+    |
+      sent_articles: [%{id: article_id, sent_at: sent_at} | subscription.sent_articles],
     }
   end
 end

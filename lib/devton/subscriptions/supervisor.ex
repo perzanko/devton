@@ -12,9 +12,12 @@ defmodule Devton.Subscriptions.Supervisor do
       # Event handlers
       worker(EventHandlers.SubscriptionCreated, [], id: :subscription_created_handler),
       worker(EventHandlers.SubscriptionDeactivated, [], id: :subscription_deactivated_handler),
+      worker(EventHandlers.SendPerformed, [], id: :send_performed_handler),
+
       # Projectors
       worker(Projectors.SubscriptionCreated, [], id: :subscription_created_projector),
       worker(Projectors.SubscriptionDeactivated, [], id: :subscription_deactivated_projector),
+      worker(Projectors.SendPerformed, [], id: :send_performed_projector),
 
       # Process managers
       worker(ProcessManagers.SubscriptionsSaga, [], id: :subscriptions_saga)
