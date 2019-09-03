@@ -2,10 +2,7 @@ FROM bitwalker/alpine-elixir-phoenix:latest
 
 MAINTAINER Kacper Perzankowski
 
-ENV HOME /opt/app
-WORKDIR $HOME
-
-ENV MIX_ENV=prod
+WORKDIR /opt/app
 
 # Install hex (Elixir package manager)
 RUN mix local.hex --force

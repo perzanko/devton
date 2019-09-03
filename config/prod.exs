@@ -4,7 +4,7 @@ config :logger, level: :debug
 
 config :devton, DevtonWeb.Endpoint,
        http: [:inet6, port: System.get_env("PORT")],
-       secret_key_base: "VHVUlsvU/+jfsQuFe/gUYethV7V5HN0ZiUqFaCFvhwQJF2Te5Lh7F7pQGa90acLo"
+       secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 config :eventstore,
        column_data_type: "jsonb"
@@ -22,8 +22,6 @@ config :devton, Devton.Repo,
        pool_size: 10
 
 config :slack,
-       client_id: "739395409799.739716238054",
-       client_secret: "5eda2093e92aba482bdd73ba52662af2",
-       root_url: "http://159.65.222.14:4000/api/slack/auth"
-
-import_config "prod.secret.exs"
+       client_id: System.get_env("SLACK_CLIENT_ID"),
+       client_secret: System.get_env("SLACK_CLIENT_SECRET"),
+       root_url: System.get_env("SLACK_CLIENT_ROOT_URL")
