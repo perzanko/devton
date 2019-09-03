@@ -5,7 +5,7 @@ MAINTAINER Kacper Perzankowski
 ENV HOME /opt/app
 WORKDIR $HOME
 
-ENV PORT=4000 MIX_ENV=prod
+ENV MIX_ENV=prod
 
 # Install hex (Elixir package manager)
 RUN mix local.hex --force
@@ -26,5 +26,3 @@ RUN mix phx.digest
 
 # Copy all application files
 COPY . .
-
-EXPOSE 4000
