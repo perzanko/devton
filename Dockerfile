@@ -1,18 +1,28 @@
 FROM bitwalker/alpine-elixir-phoenix:latest
 
-RUN mkdir /app
-WORKDIR /app
+MAINTAINER Kacper Perzankowski
 
-# Set exposed ports
-EXPOSE 4000
+ENV HOME /opt/app
+WORKDIR $HOME
+
 ENV PORT=4000 MIX_ENV=prod
 
-ADD . /app
+# Install hex (Elixir package manager)
+RUN mix local.hex --force
 
-# Cache elixir deps
-ADD mix.exs mix.lock /app/
-RUN mix do deps.get, deps.compile
+# Install rebar (Erlang build tool)
+RUN mix local.rebar --force
 
-USER default
+# Copy all dependencies files
+COPY mix.* ./
 
-CMD ["elixir", "--sname", "devton", "-S", "mix", "phx.server"]
+# Install all production dependencies
+RUN mix deps.get --only prod
+
+# Compile all dependencies
+RUN mix deps.compile
+
+# Copy all application files
+COPY . .
+
+EXPOSE 4000

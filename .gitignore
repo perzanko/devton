@@ -30,4 +30,5 @@ devton-*.tar
 
 .env
 
+/config/dev.secret.exs
 /config/prod.secret.exs
