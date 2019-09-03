@@ -10,9 +10,8 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 
-
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, level: :debug
 
 # ## SSL Support
 #
