@@ -10,6 +10,8 @@ use Mix.Config
 config :devton,
   ecto_repos: [Devton.Repo]
 
+config :devton, env: Mix.env
+
 # Configures the endpoint
 config :devton, DevtonWeb.Endpoint,
   url: [host: "localhost"],
@@ -30,7 +32,6 @@ config :commanded, event_store_adapter: Commanded.EventStore.Adapters.EventStore
 config :commanded_ecto_projections,
        repo: Devton.Repo
 
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
@@ -44,7 +45,6 @@ config :slack,
 config :devton, Devton.Scheduler,
       global: true,
       debug_logging: false,
-      timezone: :utc,
       jobs: [
         {"0 2 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
         {"0 4 * * *", {DevtonAggregator.ArticlesAggregator, :aggregate, []}},

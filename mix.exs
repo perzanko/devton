@@ -20,7 +20,7 @@ defmodule Devton.MixProject do
   def application do
     [
       mod: {Devton.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :quantum]
     ]
   end
 
@@ -48,7 +48,8 @@ defmodule Devton.MixProject do
       {:skooma, "~> 0.2.0"},
       {:slack, "~> 0.19.0"},
       {:quantum, "~> 2.3"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:poison, "~> 3.0"}
     ]
   end
 

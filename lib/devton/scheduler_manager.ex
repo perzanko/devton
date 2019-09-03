@@ -9,9 +9,8 @@ defmodule Devton.SchedulerManager do
 
   # Client
 
-  def start_link() do
+  def start_link, do:
     GenServer.start_link(__MODULE__, [], name: SchedulerManager)
-  end
 
   def refresh_subscriptions(delay \\ @delay),
       do: GenServer.cast(SchedulerManager, {:refresh_subscriptions, delay})
@@ -23,7 +22,7 @@ defmodule Devton.SchedulerManager do
 
   @impl true
   def init(stack) do
-    refresh_subscriptions
+    refresh_subscriptions()
     {:ok, stack}
   end
 
