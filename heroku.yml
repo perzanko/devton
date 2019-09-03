@@ -7,7 +7,5 @@ setup:
 build:
   docker:
     web: Dockerfile
-  config:
-    MIX_ENV: prod
 run:
   web: elixir --sname devton -S mix phx.server
