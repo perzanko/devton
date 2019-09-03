@@ -6,6 +6,5 @@ services:
     restart: always
     ports:
       - 4000:4000
-    command: ["elixir", "--sname", "devton", "-S", "mix", "phx.server"]
     volumes:
       - .:/app

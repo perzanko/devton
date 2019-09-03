@@ -7,10 +7,12 @@ WORKDIR /app
 EXPOSE 4000
 ENV PORT=4000 MIX_ENV=prod
 
+ADD . /app
+
 # Cache elixir deps
 ADD mix.exs mix.lock /app/
 RUN mix do deps.get, deps.compile
 
-ADD . /app
-
 USER default
+
+CMD ["elixir", "--sname", "devton", "-S", "mix", "phx.server"]
