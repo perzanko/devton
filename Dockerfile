@@ -22,6 +22,8 @@ RUN mix deps.get --only prod
 # Compile all dependencies
 RUN mix deps.compile
 
+RUN mix phx.digest
+
 # Copy all application files
 COPY . .
 
