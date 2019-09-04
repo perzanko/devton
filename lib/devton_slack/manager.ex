@@ -56,7 +56,6 @@ defmodule DevtonSlack.Manager do
     |> Enum.filter(fn workspace -> workspace.enabled end)
     |> Enum.map(
          fn workspace ->
-            Logger.info "elo"
            atomized_name = atomize_workspace_name(workspace.name)
            processes =
              if :erlang.whereis(atomized_name) == :undefined do
