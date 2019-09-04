@@ -3,7 +3,7 @@ use Mix.Config
 config :logger, level: :debug
 
 config :devton, DevtonWeb.Endpoint,
-       http: [:inet6, port: System.get_env("PORT")],
+       http: [:inet6, port: {:system, "PORT"}],
        secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 config :eventstore,
@@ -12,13 +12,14 @@ config :eventstore,
 config :eventstore, EventStore.Storage,
        serializer: EventStore.JsonbSerializer,
        types: EventStore.PostgresTypes,
-       url: System.get_env("EVENT_STORE"),
+       url: System.get_env("EVENT_STORE_URL"),
        pool_size: 10,
        pool_overflow: 5
 
 config :devton, Devton.Repo,
+       loggers: [{Ecto.LogEntry, :log, []}, {ScoutApm.Instruments.EctoLogger, :log, []}],
        adapter: Ecto.Adapters.Postgres,
-       url: System.get_env("READ_STORE"),
+       url: System.get_env("READ_STORE_URL"),
        pool_size: 10
 
 config :slack,

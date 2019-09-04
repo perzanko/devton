@@ -69,4 +69,7 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-import_config "dev.secret.exs"
+config :slack,
+       client_id: "739395409799.739716238054",
+       client_secret: "5eda2093e92aba482bdd73ba52662af2",
+       root_url: "http://localhost:4000/api/slack/auth"

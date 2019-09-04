@@ -20,6 +20,7 @@ defmodule DevtonWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: DevtonWeb
+      use ScoutApm.Instrumentation
 
       import Plug.Conn
       import DevtonWeb.Gettext
