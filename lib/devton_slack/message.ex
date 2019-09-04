@@ -4,7 +4,10 @@ defmodule DevtonSlack.Message do
 Hi <@#{user_id}>, I'm _Devton_ :wave:
 I can help you to stay up to date as a developer! :male-technologist:
 Let's create your own *dev.to* newsletter!
-    "
+
+*Devton* is a Slack application that helps programmers to be up to date in the IT world.
+
+The application allows you to create your own personalized newsletter and receive currently the most interesting articles from dev.to. Articles are selected based on the tags you enter. The shipping time of articles can be configured completely arbitrarily. You can choose the frequency, day and time."
   end
 
   def help do
