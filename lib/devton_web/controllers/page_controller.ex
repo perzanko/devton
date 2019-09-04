@@ -1,6 +1,8 @@
 defmodule DevtonWeb.PageController do
   use DevtonWeb, :controller
 
+  alias Devton.Subscriptions
+
   #  def index(conn, %{}), do: render(conn, "index.html", success: false)
   def index(conn, params) do
     success_img = case params["success"] == "true" do
@@ -15,6 +17,7 @@ defmodule DevtonWeb.PageController do
       "index.html",
       %{
         success: params["success"] == "true",
+        subscriptions_count: Subscriptions.get_subscriptions_count(),
         success_img: success_img,
       }
     )

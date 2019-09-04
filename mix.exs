@@ -10,7 +10,8 @@ defmodule Devton.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_deps: :transitive]
     ]
   end
 
@@ -53,6 +54,7 @@ defmodule Devton.MixProject do
       {:poison, "~> 3.0"},
       {:scout_apm, "~> 0.0"},
       {:phoenix_html, "~> 2.11"},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false}
     ]
   end
 

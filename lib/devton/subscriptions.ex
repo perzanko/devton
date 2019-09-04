@@ -1,7 +1,7 @@
 defmodule Devton.Subscriptions do
   @moduledoc false
 
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query
 
   alias Devton.Repo
   alias Devton.Router
@@ -47,6 +47,9 @@ defmodule Devton.Subscriptions do
     )
   end
   def get_subscriptions(), do: Repo.all(Subscription)
+
+  def get_subscriptions_count(),
+      do: Repo.aggregate(from(p in Subscription), :count, :uuid)
 
   def create_subscription(
         %{

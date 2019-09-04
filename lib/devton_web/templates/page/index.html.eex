@@ -9,7 +9,10 @@
             <% end %>
             <%= if @success == false do %>
                 <div class="wrapper">
-                    <img class="logo" title="Devton" src="<%= Routes.static_path(@conn, "/images/dev_to_logo.png") %>" />
+                    <div class="logo-wrapper">
+                        <span class="badge badge-warning"><strong><%= @subscriptions_count %> subs</strong></span>
+                        <img class="logo" title="Devton" src="<%= Routes.static_path(@conn, "/images/dev_to_logo.png") %>" />
+                    </div>
                     <h1>Devton</h1>
                     <h5>Highly customizable and personalized <a href="https://dev.to/" target="_blank">dev.to</a> newsletter 📪</h5>
                     <a class="slack-btn" href="https://slack.com/oauth/authorize?client_id=739395409799.739716238054&scope=chat:write:bot,bot"><img alt="Add to Slack" height="40" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" ></a>
@@ -36,6 +39,27 @@ html, body {
     margin-bottom: 20px;
     line-height: 1;
 }
+
+.wrapper > .logo-wrapper {
+    position:relative;
+    flex-basis: 100%;
+    margin-bottom: 30px;
+}
+
+.wrapper > .logo-wrapper > .badge {
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 400;
+    background-color: #66E1D5;
+    color: white;
+    font-size: 12px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    border-radius: 3px;
+}
+
+
 .wrapper > h5 {
     color: rgb(102, 102, 102);
     font-size: 15px;
@@ -74,10 +98,9 @@ html, body {
     opacity: 0.8;
 }
 
-.wrapper > img.logo {
+.wrapper > .logo-wrapper > img.logo {
     max-width: 150px;
     border-radius: 8px;
-    margin-bottom: 30px;
 }
 
 .wrapper > img.logo--small {

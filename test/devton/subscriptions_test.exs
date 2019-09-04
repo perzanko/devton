@@ -44,4 +44,15 @@ defmodule Devton.Subscriptions.SubscriptionsTest do
 
     assert {:ok, true} = Subscriptions.deactivate_subscription(%{ "uuid" => uuid })
   end
+
+  @tag :get_subscriptions_count
+  test "gets subscriptions count" do
+    sub = Mother.Subscription.simple()
+    Subscriptions.create_subscription(sub)
+    Subscriptions.create_subscription(sub)
+
+    :timer.sleep(500)
+
+    assert 2 == Subscriptions.get_subscriptions_count()
+  end
 end
