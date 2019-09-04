@@ -13,6 +13,7 @@ Let's create your own *dev.to* newsletter!
 > ```
 devton subscribe (--tag --day --time)              # Create new subscription
 devton unsubscribe (--id)                          # Remove subscription
+devton tags (--top)                                # Show most popular tags
 devton status                                      # Show all active subscriptions
 ```
 >
@@ -22,6 +23,7 @@ devton status                                      # Show all active subscriptio
 --day, -d               # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
 --time, -m              # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
 --id                    # Subscription id
+--top                   # Limit of top tags, max 100 (eg. 20)
 --help, -h              # Show this screen
 ```
 >
@@ -92,8 +94,8 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
          "Here is the list of most popular tags: \n",
          fn {%{tag_name: tag_name}, index}, acc ->
            case index <= 100 do
-             true -> "#{index}. *#{tag_name}* \n"
-             false -> ""
+             true -> acc <> "#{index}. *#{tag_name}* \n"
+             false -> acc <> ""
            end
          end
        )
