@@ -13,9 +13,8 @@ defmodule DevtonAggregator.TagsAggregator do
   end
 
   def handle_cast({:aggregate_single, page_id}, state) do
-    Task.async(
+    spawn(
       fn ->
-        :timer.sleep(page_id * 200)
         Logger.info("TagsAggregator, aggregating: #{page_id}")
         try do
           HTTPoison.get!("https://dev.to/api/tags?page=#{page_id}").body
@@ -41,10 +40,15 @@ defmodule DevtonAggregator.TagsAggregator do
 
   def aggregate() do
     Logger.info("TagsAggregator start aggregate")
-    Enum.each(
-      1..4000,
-      fn x ->
-        Task.async fn -> GenServer.cast(__MODULE__, {:aggregate_single, x}) end
+    spawn(
+      fn ->
+        Enum.each(
+          1..4000,
+          fn x ->
+            :timer.sleep(200)
+            GenServer.cast(__MODULE__, {:aggregate_single, x})
+          end
+        )
       end
     )
   end
