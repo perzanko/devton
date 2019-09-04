@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Highly customizable and personalized dev.to newsletter 📪">
+    <meta name="author" content="Kacper Perzankowski">
+    <meta name="slack-app-id" content="AMRM2701L">
+    <link rel="shortcut icon" type="image/x-icon" href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/favicon-bca01e42dfbe772972ebe01e7150cdb8b75555c612b20b7e3059a10e0ca6f759.ico">
+      <link rel="apple-touch-icon" href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/apple-icon-e9a036e0385d6e1e4ddef50be5e583800c0b5ca325d4998a640c38602d23b26c.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/apple-icon-152x152-175277237bd0d14dde52c97502b64dee6566354ad487ddd47f6df7ad88f5fa14.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/apple-icon-180x180-7fe998b248bfcfd634283d27fcfe4adae7fb21cd6a87b509f7a00e575bb3b8df.png">
+      <link rel="apple-touch-icon" sizes="167x167" href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/apple-icon-167x167-ce945dd0463cecb6a56190a8476b7ddb72f0236c6d88cc5f681eea934ce92b9b.png">
+      <link href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/android-icon-192x192-0409854849dca4043b26f85039b8c3d42cbac2bd8793fec1004eb389fa153877.png" rel="icon" sizes="192x192">
+      <link href="https://practicaldev-herokuapp-com.freetls.fastly.net/assets/android-icon-128x128-ac6d217579b9ef3362ffec87f96de83148f80c5b5b06e06df6506b7606e7e2b6.png" rel="icon" sizes="128x128">
+      <meta name="apple-mobile-web-app-title" content="dev.to">
+      <meta name="application-name" content="dev.to">
+      <meta property="fb:pages" content="568966383279687">
+      <meta name="theme-color" content="#000000">
+
+    <title>Devton - DEV Newsletter 👩‍💻👨‍💻</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <header class="header">
+    <span class="logo"></span>
+    </header>
+
+    <main role="main">
+        <%= render @view_module, @view_template, assigns %>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

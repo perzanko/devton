@@ -50,7 +50,8 @@ defmodule Devton.MixProject do
       {:quantum, "~> 2.3"},
       {:timex, "~> 3.0"},
       {:poison, "~> 3.0"},
-     {:scout_apm, "~> 0.0"}
+      {:scout_apm, "~> 0.0"},
+      {:phoenix_html, "~> 2.11"},
     ]
   end
 
