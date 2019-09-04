@@ -46,7 +46,7 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def subscribed_success(tags) do
-    ":white_check_mark: OK! You have been successfully subscribed! Tags: *#{Enum.join tags, ", "}*. Type `devton status` to see all available subscriptions."
+    ":white_check_mark: OK! You have been successfully subscribed! Tags: *#{Enum.join tags, ", "}*. Type `devton status` to see all active subscriptions."
   end
 
   def subscribed_fail do
