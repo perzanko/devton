@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :logger, level: :debug
+config :logger, level: :info
 
 config :devton, DevtonWeb.Endpoint,
        http: [:inet6, port: {:system, "PORT"}],
