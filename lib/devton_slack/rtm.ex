@@ -15,6 +15,9 @@ defmodule DevtonSlack.Rtm do
     {:ok, state}
   end
 
+  def handle_event(message = %{type: "message"}, slack, state)
+      when String.contains?(message.text, "Do Not Disturb"), do:
+        {:ok, state}
   def handle_event(message = %{type: "message"}, slack, state) do
     try do
       command = Cli.handle_command(message.text)
