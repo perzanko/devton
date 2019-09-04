@@ -32,3 +32,6 @@ devton-*.tar
 
 /config/dev.secret.exs
 /config/prod.secret.exs
+
+
+assets/node_modules

@@ -42,6 +42,7 @@ defmodule Devton.MixProject do
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:commanded, "~> 0.19"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:eventstore, "~> 0.17.0", runtime: Mix.env() != :test},
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
       {:commanded_ecto_projections, "~> 0.8"},

@@ -2,6 +2,10 @@ use Mix.Config
 
 config :logger, level: :info
 
+config :devton, TestAppPhoenixWeb.Endpoint,
+       url: [host: "devton.app", port: {:system, "PORT"}],
+       cache_static_manifest: "priv/static/cache_manifest.json"
+
 config :devton, DevtonWeb.Endpoint,
        http: [:inet6, port: {:system, "PORT"}],
        secret_key_base: System.get_env("SECRET_KEY_BASE")
