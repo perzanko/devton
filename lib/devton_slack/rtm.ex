@@ -46,6 +46,10 @@ defmodule DevtonSlack.Rtm do
         {:unsubscribe, %{id: id}} ->
           indicate_typing(message.channel, slack)
           Devton.Subscriptions.deactivate_subscription(%{"uuid" => id})
+        {:tags, %{top: top}} ->
+          indicate_typing(message.channel, slack)
+          tags = Devton.Library.get_top_tags(String.to_integer(top))
+          send_message(Message.tags(tags), message.channel, slack)
         {:help} ->
           indicate_typing(message.channel, slack)
           send_message(Message.help, message.channel, slack)

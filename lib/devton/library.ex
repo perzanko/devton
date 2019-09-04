@@ -8,7 +8,7 @@ defmodule Devton.Library do
   alias Devton.Repo
   alias Devton.Router
   alias Devton.Library.Commands.{CreateTag, CreateArticle}
-  alias Devton.Library.Projections.{Tag, Article}
+  alias Devton.Library.Projections.{Tag, Article, TopTag}
 
   def get_article(%{ "id" => id }) do
     case Repo.get(Article, id) do
@@ -60,7 +60,7 @@ defmodule Devton.Library do
         user: article["user"] || %{},
         organization: article["organization"] || %{}
       }
-      |> Router.dispatch(metadata: metadata)
+      |> Router.dispatch(%{metadata: metadata, consistency: :strong})
 
     case result do
       :ok ->
@@ -106,5 +106,15 @@ defmodule Devton.Library do
                  where: a.published_at > ^Timex.shift(Timex.now(), days: -5),
                  limit: 50
     Repo.all query
+  end
+
+  def get_top_tags(top \\ 20) do
+    query = from tt in TopTag,
+      select: [tt.tag_name, count(tt.id)],
+      limit: ^top,
+      order_by: [desc: count(tt.id)],
+      group_by: tt.tag_name
+    Repo.all(query)
+    |> Enum.map(fn [tag_name, count] -> %{ tag_name: tag_name, count: count } end)
   end
 end

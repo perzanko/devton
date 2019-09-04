@@ -1,9 +1,12 @@
 defmodule Devton.Library.Projectors.ArticleCreated do
-  use Commanded.Projections.Ecto, name: "Library.Projectors.ArticleCreated"
+  use Commanded.Projections.Ecto,
+      name: "Library.Projectors.ArticleCreated",
+      consistency: :strong
 
   alias Devton.Repo
   alias Devton.Library.Events.ArticleCreated
   alias Devton.Library.Projections.Article
+  alias Devton.Library.Projections.TopTag
 
   project(
     %ArticleCreated{} = event,
@@ -29,6 +32,14 @@ defmodule Devton.Library.Projectors.ArticleCreated do
           organization: event.organization
         }
       )
+
+      Enum.each(
+        event.tag_list,
+        fn tag ->
+          Repo.insert(%TopTag{tag_name: tag})
+        end
+      )
+
       Ecto.Multi.insert_or_update(
         multi,
         :article,

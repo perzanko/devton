@@ -46,7 +46,9 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def subscribed_success(tags) do
-    ":white_check_mark: OK! You have been successfully subscribed! Tags: *#{Enum.join tags, ", "}*. Type `devton status` to see all active subscriptions."
+    ":white_check_mark: OK! You have been successfully subscribed! Tags: *#{
+      Enum.join tags, ", "
+    }*. Type `devton status` to see all active subscriptions."
   end
 
   def subscribed_fail do
@@ -66,13 +68,35 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def status(subscriptions) do
-     List.foldl(subscriptions, "Here is the list of all your active subscriptions: \n", fn subscription, acc ->
-      acc <> "
+    List.foldl(
+      subscriptions,
+      "Here is the list of all your active subscriptions: \n",
+      fn subscription, acc ->
+        acc <> "
 > ID: `#{subscription.uuid}`
 > Tags: *#{Enum.join subscription.tags, ", "}*
-> Cron: #{subscription.cron_tabs |> Enum.map(fn x -> "`#{x}`" end) |> Enum.join ", "}
+> Cron: #{
+          subscription.cron_tabs
+          |> Enum.map(fn x -> "`#{x}`" end)
+          |> Enum.join ", "
+        }
 "
-    end)
+      end
+    )
+  end
+
+  def tags(tag_list) do
+    tag_list
+    |> Enum.with_index(1)
+    |> Enum.reduce(
+         "Here is the list of most popular tags: \n",
+         fn {%{tag_name: tag_name}, index}, acc ->
+           case index <= 100 do
+             true -> "#{index}. *#{tag_name}* \n"
+             false -> ""
+           end
+         end
+       )
   end
 
   def article(user_id, article) do

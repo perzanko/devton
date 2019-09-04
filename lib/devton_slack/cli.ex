@@ -50,6 +50,9 @@ defmodule DevtonSlack.Cli do
     iex> DevtonSlack.Cli.handle_command("devton unsubscribe --id \"10\"")
     {:unsubscribe, %{ id: "10" }}
 
+    iex> DevtonSlack.Cli.handle_command("devton tags --top 10")
+    {:tags, %{ top: "10" }}
+
   """
   def handle_command(command) do
      command
@@ -108,6 +111,7 @@ defmodule DevtonSlack.Cli do
     case args_list do
       ["devton" | ["subscribe" | args]] -> {:subscribe, args}
       ["devton" | ["unsubscribe" | args]] -> {:unsubscribe, args}
+      ["devton" | ["tags" | args]] -> {:tags, args}
       ["devton" | ["status" | args]] -> {:status}
       ["devton", "--help"] -> {:help}
       ["devton", "-h"] -> {:help}
@@ -134,6 +138,9 @@ defmodule DevtonSlack.Cli do
 
     iex> DevtonSlack.Cli.parse_args({ :unsubscribe, ["--id", "10"] })
     {:unsubscribe, [id: "10"]}
+
+    iex> DevtonSlack.Cli.parse_args({ :tags, ["--top", "10"] })
+    {:tags, [top: "10"]}
 
     iex> DevtonSlack.Cli.parse_args({ :unsubscribe, ["-t", "javascript,elixir", "--time", "10:00"] })
     {:invalid_command}
@@ -172,6 +179,16 @@ defmodule DevtonSlack.Cli do
             ]
           )
           {:unsubscribe, validated_args}
+        {:tags, args} ->
+          {validated_args, _} = OptionParser.parse!(
+            args,
+            [
+              strict: [
+                top: :string
+              ]
+            ]
+          )
+          {:tags, validated_args}
         x -> x
       end
     rescue
@@ -249,6 +266,13 @@ defmodule DevtonSlack.Cli do
       {:unsubscribe, args} = command ->
         case Skooma.valid?(args, %{
           id: :string,
+        }) do
+          {:error, _} -> {:invalid_command}
+          _ -> command
+        end
+      {:tags, args} = command ->
+        case Skooma.valid?(args, %{
+          top: :string,
         }) do
           {:error, _} -> {:invalid_command}
           _ -> command
