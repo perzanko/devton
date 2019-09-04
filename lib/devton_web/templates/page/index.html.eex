@@ -12,7 +12,8 @@
                     <img class="logo" title="Devton" src="<%= Routes.static_path(@conn, "/images/dev_to_logo.png") %>" />
                     <h1>Devton</h1>
                     <h5>Highly customizable and personalized <a href="https://dev.to/" target="_blank">dev.to</a> newsletter 📪</h5>
-                    <a href="https://slack.com/oauth/authorize?client_id=739395409799.739716238054&scope=chat:write:bot,bot"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
+                    <a class="slack-btn" href="https://slack.com/oauth/authorize?client_id=739395409799.739716238054&scope=chat:write:bot,bot"><img alt="Add to Slack" height="40" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" ></a>
+                    <small class="read-more"><a href="https://slack.com/apps/AMRM2701L-devton">Read more</a></small>
                 </div>
             <% end %>
             <div class="wrapper wrapper--invisible">
@@ -29,18 +30,23 @@ html, body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-h1 {
+.wrapper > h1 {
     font-weight: 500;
     flex-basis: 100%;
     margin-bottom: 20px;
     line-height: 1;
 }
-h5 {
+.wrapper > h5 {
     color: rgb(102, 102, 102);
     font-size: 15px;
     font-weight: 500;
     flex-basis: 100%;
     margin-bottom: 30px;
+}
+
+.wrapper > .read-more {
+    margin-left: 20px;
+    text-decoration: underline;
 }
 
 .wrapper {
@@ -68,22 +74,27 @@ h5 {
     opacity: 0.8;
 }
 
-.wrapper img.logo {
+.wrapper > img.logo {
     max-width: 150px;
     border-radius: 8px;
     margin-bottom: 30px;
 }
 
-.wrapper img.logo--small {
+.wrapper > img.logo--small {
     max-width: 80px;
     border-radius: 8px;
     margin-bottom: 30px;
 }
 
-.wrapper iframe {
+.wrapper > iframe {
     border: none;
     flex-basis: 100%;
     width: 300px;
     height: 300px
+}
+
+.wrapper > .slack-btn {
+    /*flex-basis: 100%;*/
+    /*margin-bottom: 5px;*/
 }
 </style>
