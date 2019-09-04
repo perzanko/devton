@@ -13,13 +13,13 @@ defmodule DevtonAggregator.ArticlesAggregator do
   end
 
   def handle_cast({:aggregate_single, tag, index}, state) do
-    Task.async(
+    spawn(
       fn ->
-        :timer.sleep(index * 200)
         Logger.info("ArticlesAggregator, aggregating: #{tag}")
         try do
-          HTTPoison.get!("https://dev.to/api/articles?top=5&tag=#{tag}").body
+          result = HTTPoison.get!("https://dev.to/api/articles?top=5&tag=#{tag}").body
           |> Poison.decode!
+          GenServer.cast(__MODULE__, {:save_result, result})
         rescue
           _ -> []
         end
@@ -28,25 +28,38 @@ defmodule DevtonAggregator.ArticlesAggregator do
     {:noreply, state}
   end
 
-  def handle_info({_, result}, state) do
-    Enum.each(
-      result,
-      fn article ->
-        Library.create_article article
+  def handle_cast({:save_result, result}, state) do
+    spawn(
+      fn ->
+        Enum.each(
+          result,
+          fn article ->
+            Library.create_article article
+          end
+        )
       end
     )
+    {:noreply, state}
+  end
+
+  def handle_info({_, result}, state) do
     {:noreply, state}
   end
   def handle_info(_, state), do: {:noreply, state}
 
   def aggregate() do
     Logger.info("ArticlesAggregator start aggregate")
-    Library.find_tags
-    |> Stream.with_index
-    |> Enum.each(
-         fn {tag, index} ->
-           Task.async fn -> GenServer.cast(__MODULE__, {:aggregate_single, tag, index}) end
-         end
-       )
+    spawn(
+      fn ->
+        Library.find_tags
+        |> Stream.with_index
+        |> Enum.each(
+             fn {tag, index} ->
+               :timer.sleep(200)
+               GenServer.cast(__MODULE__, {:aggregate_single, tag, index})
+             end
+           )
+      end
+    )
   end
 end

@@ -17,8 +17,9 @@ defmodule DevtonAggregator.TagsAggregator do
       fn ->
         Logger.info("TagsAggregator, aggregating: #{page_id}")
         try do
-          HTTPoison.get!("https://dev.to/api/tags?page=#{page_id}").body
+          result = HTTPoison.get!("https://dev.to/api/tags?page=#{page_id}").body
           |> Poison.decode!
+          GenServer.cast(__MODULE__, {:save_result, result})
         rescue
           _ -> []
         end
@@ -27,13 +28,21 @@ defmodule DevtonAggregator.TagsAggregator do
     {:noreply, state}
   end
 
-  def handle_info({_, result}, state) do
-    Enum.each(
-      result,
-      fn tag ->
-        Library.create_tag tag
+  def handle_cast({:save_result, result}, state) do
+    spawn(
+      fn ->
+        Enum.each(
+          result,
+          fn tag ->
+            Library.create_tag tag
+          end
+        )
       end
     )
+    {:noreply, state}
+  end
+
+  def handle_info({_, result}, state) do
     {:noreply, state}
   end
   def handle_info(_, state), do: {:noreply, state}
