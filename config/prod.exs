@@ -19,7 +19,7 @@ config :eventstore, EventStore.Storage,
 config :devton, Devton.Repo,
        loggers: [{Ecto.LogEntry, :log, []}, {ScoutApm.Instruments.EctoLogger, :log, []}],
        adapter: Ecto.Adapters.Postgres,
-       url: System.get_env("READ_STORE_URL"),
+       url: System.get_env("READ_STORE_BASIC_URL"),
        pool_size: 10
 
 config :slack,
