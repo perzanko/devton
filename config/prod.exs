@@ -12,7 +12,7 @@ config :eventstore,
 config :eventstore, EventStore.Storage,
        serializer: EventStore.JsonbSerializer,
        types: EventStore.PostgresTypes,
-       url: System.get_env("EVENT_STORE_URL"),
+       url: System.get_env("EVENT_STORE_BASIC_URL"),
        pool_size: 10,
        pool_overflow: 5
 
