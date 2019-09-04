@@ -55,7 +55,7 @@ defmodule DevtonAggregator.ArticlesAggregator do
         |> Stream.with_index
         |> Enum.each(
              fn {tag, index} ->
-               :timer.sleep(200)
+               :timer.sleep(400)
                GenServer.cast(__MODULE__, {:aggregate_single, tag, index})
              end
            )

@@ -54,7 +54,7 @@ defmodule DevtonAggregator.TagsAggregator do
         Enum.each(
           1..4000,
           fn x ->
-            :timer.sleep(200)
+            :timer.sleep(400)
             GenServer.cast(__MODULE__, {:aggregate_single, x})
           end
         )
