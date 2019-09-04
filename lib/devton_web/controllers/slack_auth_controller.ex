@@ -36,7 +36,7 @@ defmodule DevtonWeb.SlackAuthController do
           )
       end
 
-      redirect(conn, external: "https://#{workspace_details["team_name"]}.slack.com/")
+      redirect(conn, external: "https://devton.app?success=true")
     end
   end
 
