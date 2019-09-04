@@ -105,6 +105,9 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
   end
 
   def article(user_id, article) do
-    "<@#{user_id}>, now is your time for the article! \n #{article.url} \n Have a nice reading! :nerd_face:"
+    tags = article.tag_list
+           |> Enum.map(fn x -> "`#{x}`" end)
+           |> Enum.join(", ")
+    "Hey <@#{user_id}>, take a coffee break and read this article! \n Tags: #{tags} \n #{article.url} \n Have a nice reading! :nerd_face:"
   end
 end
