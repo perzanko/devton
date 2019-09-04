@@ -70,6 +70,6 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :slack,
-       client_id: "739395409799.739716238054",
-       client_secret: "5eda2093e92aba482bdd73ba52662af2",
+       client_id: System.get_env("SLACK_CLIENT_ID"),
+       client_secret: System.get_env("SLACK_CLIENT_SECRET"),
        root_url: "http://localhost:4000/api/slack/auth"
