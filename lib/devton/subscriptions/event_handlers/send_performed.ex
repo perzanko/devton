@@ -21,7 +21,7 @@ defmodule Devton.Subscriptions.EventHandlers.SendPerformed do
         Rtm.send_message_to_channel(
           subscription.workspace["name"],
           subscription.user["id"],
-          Message.article(article)
+          Message.article(subscription.user["id"], article)
         )
       end
     )

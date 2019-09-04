@@ -75,7 +75,7 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
     end)
   end
 
-  def article(article) do
-    article.url
+  def article(user_id, article) do
+    "<@#{user_id}>, now is your time for the article! \n #{article.url} \n Have a nice reading! :nerd_face:"
   end
 end
