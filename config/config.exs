@@ -40,7 +40,7 @@ config :devton, Devton.Scheduler,
       global: true,
       debug_logging: false,
       jobs: [
-        {"0 2 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
+        {"0 1 * * *", {DevtonAggregator.TagsAggregator, :aggregate, []}},
         {"0 4 * * *", {DevtonAggregator.ArticlesAggregator, :aggregate, []}},
       ]
 
