@@ -3,6 +3,7 @@ defmodule DevtonSlack.Supervisor do
   use GenServer
 
   alias Devton.Workspaces
+  alias DevtonSlack.Manager
 
   def child_spec(workspace) do
     %{
@@ -14,7 +15,7 @@ defmodule DevtonSlack.Supervisor do
 
   # initializes the Genserver and init() is invoked after this
   def start_link(workspace) do
-    GenServer.start_link(__MODULE__, workspace, name: String.to_atom(workspace.name))
+    GenServer.start_link(__MODULE__, workspace, name: Manager.atomize_workspace_name(workspace.name))
   end
 
   # start Slack Bot using `start_link` and monitor its errors
@@ -23,7 +24,7 @@ defmodule DevtonSlack.Supervisor do
       DevtonSlack.Rtm,
       workspace,
       workspace.bot_token,
-      %{name: String.to_atom(workspace.name <> "_channel")}
+      %{name: Manager.atomize_workspace_name(workspace.name, true)}
     )
     |> handle_errors(workspace)
   end

@@ -2,10 +2,11 @@ defmodule DevtonSlack.Rtm do
   use Slack
   require Logger
 
-  alias DevtonSlack.{Cli, Message}
+  alias DevtonSlack.{Cli, Message, Manager}
 
   def send_message_to_channel(workspace_name, channel, message) do
-    pid = Process.whereis(String.to_atom(workspace_name <> "_channel"))
+    atomized_workspace_name = Manager.atomize_workspace_name(workspace_name, true);
+    pid = Process.whereis(atomized_workspace_name)
     send pid, {:message, message, channel}
   end
 

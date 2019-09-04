@@ -32,6 +32,13 @@ defmodule DevtonSlack.Manager do
     start_bots(state)
   end
 
+  def atomize_workspace_name(workspace_name, channel \\ false) do
+    suffix = if channel == true, do: "channel", else: ""
+    :crypto.hash(:md5, workspace_name <> suffix)
+    |> Base.encode16()
+    |> String.to_atom()
+  end
+
   defp start_bots(_state) do
     process_ids = start_all_bots()
     poll()
@@ -49,7 +56,8 @@ defmodule DevtonSlack.Manager do
     |> Enum.filter(fn workspace -> workspace.enabled end)
     |> Enum.map(
          fn workspace ->
-           atomized_name = String.to_atom(workspace.name)
+            Logger.info "elo"
+           atomized_name = atomize_workspace_name(workspace.name)
            processes =
              if :erlang.whereis(atomized_name) == :undefined do
                Logger.info("Starting Slack bot for following workspace: #{workspace.name}")
@@ -58,7 +66,5 @@ defmodule DevtonSlack.Manager do
            processes
          end
        )
-
   end
-
 end
