@@ -43,13 +43,13 @@
         <%= render @view_module, @view_template, assigns %>
     </main>
 
-    <footer>
+    <footer class="mt-5 mb-4">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
                     <a href="https://dev.to/perzanko">
                       <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-badge.svg" alt="Kacper Perzankowski's DEV Profile" height="30" width="30">
-                    </a>
+                    </a> | <small>powered by <a href="https://github.com/perzanko" target="_blank">@perzanko</a></small>
                 </div>
             </div>
         </div>

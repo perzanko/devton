@@ -19,9 +19,6 @@
                     <small class="read-more"><a href="https://slack.com/apps/AMRM2701L-devton">Read more</a></small>
                 </div>
             <% end %>
-            <div class="wrapper wrapper--invisible">
-                <small>powered by <a href="https://github.com/perzanko" target="_blank">@perzanko</a></small>
-            <div>
         </div>
     </div>
 </div>
