@@ -24,4 +24,8 @@ defmodule DevtonWeb.PageController do
   end
 
   def privacy_policy(conn, %{}), do: render(conn, "privacy-policy.html")
+
+  def contact(conn, %{}), do: render(conn, "contact.html")
+
+  def how_it_works(conn, %{}), do: render(conn, "how-it-works.html")
 end

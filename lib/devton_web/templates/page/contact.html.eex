@@ -1,0 +1,8 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-5">Contact</h1>
+            <p>Any questions? Shot me an <a href="mailto:perzankowski.kacper@gmail.com"><strong>email</strong></a>!</p>
+        </div>
+    </div>
+</div>

@@ -24,5 +24,7 @@ defmodule DevtonWeb.Router do
 
     get "/", PageController, :index
     get "/privacy-policy", PageController, :privacy_policy
+    get "/contact", PageController, :contact
+    get "/how-it-works", PageController, :how_it_works
   end
 end

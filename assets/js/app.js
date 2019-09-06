@@ -15,3 +15,18 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+const page = window.location.pathname.substring(1) || 'home'
+document.body.querySelectorAll('nav > a').forEach((menuItem) => {
+  if (menuItem.getAttribute('href').includes(page)) {
+    menuItem.style.textDecoration = 'underline'
+  }
+})
+
+document.querySelector('.hamburger').addEventListener('click', () => {
+  const { classList } = document.body.querySelector('nav')
+  if (classList.contains('active')) {
+    classList.remove('active')
+  } else {
+    classList.add('active')
+  }
+})
