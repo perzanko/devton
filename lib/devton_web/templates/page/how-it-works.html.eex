@@ -2,6 +2,30 @@
     <div class="row">
         <div class="col-12">
             <h1 class="mb-5">How it works</h1>
+            <div class="media mb-5">
+              <div class="list-item mr-5 mb-3">1</div>
+              <div class="media-body">
+                <h5 class="mb-3">Install <strong>Devton</strong> in your workspace</h5>
+                <img height="40" class="mb-3" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" > <br>
+                <img class="mb-3" src="<%= Routes.static_path(@conn, "/images/connect_workspace.png") %>" >
+              </div>
+            </div>
+            <div class="media mb-5">
+              <div class="list-item mr-5 mb-3">2</div>
+              <div class="media-body">
+                <h5 class="mb-3">Create your own subscription</h5>
+                <p class="mb-3">Now you can create your first newsletter using <strong>devton subscribe</strong> command providing <strong>time</strong>, <strong>day</strong> and <strong>tag</strong>.</p>
+                <img class="mb-3" src="<%= Routes.static_path(@conn, "/images/type_command_subscribe.png") %>" > <br>
+              </div>
+            </div>
+            <div class="media mb-5">
+              <div class="list-item mr-5 mb-3">3</div>
+              <div class="media-body">
+                <h5 class="mb-3">That's it!</h5>
+                <p class="mb-3">Great! Your newsletter is ready. Articles will be sent to you <strong>at 12pm on every Monday!</strong></p>
+                <img class="mb-3" src="<%= Routes.static_path(@conn, "/images/subscription_created.png") %>" > <br>
+              </div>
+            </div>
         </div>
     </div>
 </div>

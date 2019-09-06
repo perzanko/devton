@@ -30,3 +30,14 @@ document.querySelector('.hamburger').addEventListener('click', () => {
     classList.add('active')
   }
 })
+
+
+var options = {
+  strings: [
+    `Stay up to date as a developer! 🤓`
+  ],
+  startDelay: 1500,
+  typeSpeed: 40
+}
+
+var typed = new Typed(".typed", options);
