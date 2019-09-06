@@ -142,3 +142,18 @@ a:hover, a:focus, a:active {
     width: 300px;
     height: 300px
 }
+
+.wrapper > h3 {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.wrapper > h3 > img {
+    height: 30px;
+    margin-left: 5px;
+    margin-top: -2px;
+}
