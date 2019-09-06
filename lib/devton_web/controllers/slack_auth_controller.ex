@@ -36,7 +36,7 @@ defmodule DevtonWeb.SlackAuthController do
           )
       end
 
-      redirect(conn, external: "https://devton.app?success=true")
+      redirect(conn, external: "https://devton.app/success")
     end
   end
 

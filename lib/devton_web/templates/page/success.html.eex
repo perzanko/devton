@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col text-center">
+            <div class="wrapper">
+                <img class="logo logo--small" title="Devton" src="<%= Routes.static_path(@conn, "/images/dev_to_logo.png") %>" />
+                <h3>You did it! <img src="<%= Routes.static_path(@conn, "/images/aw_yeah.gif") %>" /></h3>
+                <iframe src="<%= @success_img %>"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
