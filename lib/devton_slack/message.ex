@@ -16,7 +16,7 @@ The application allows you to create your own personalized newsletter and receiv
 > ```
 devton subscribe (--tag --day --time)              # Create new subscription
 devton unsubscribe (--id)                          # Remove subscription
-devton tags (--top)                                # Show most popular tags
+devton tags [--top]                                # Show most popular tags
 devton status                                      # Show all active subscriptions
 ```
 >
@@ -26,7 +26,7 @@ devton status                                      # Show all active subscriptio
 --day, -d               # Day the articles are sent (eg. \"monday,tuesday\"). To send everyday use \"*\"
 --time, -m              # Time the articles are sent (eg. \"12:00\"). Devton can send more than once a day, if you use \"10:00,12:30\"
 --id                    # Subscription id
---top                   # Limit of top tags, max 100 (eg. 20)
+--top, -t               # Limit of top tags, max 100 (eg. 20)
 --help, -h              # Show this screen
 ```
 >

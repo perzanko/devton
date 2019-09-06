@@ -111,8 +111,9 @@ defmodule DevtonSlack.Cli do
     case args_list do
       ["devton" | ["subscribe" | args]] -> {:subscribe, args}
       ["devton" | ["unsubscribe" | args]] -> {:unsubscribe, args}
-      ["devton" | ["tags" | args]] -> {:tags, args}
       ["devton" | ["status" | args]] -> {:status}
+      ["devton", "tags"] -> {:tags, ["--top", "20"]}
+      ["devton" | ["tags" | args]] -> {:tags, args}
       ["devton", "--help"] -> {:help}
       ["devton", "-h"] -> {:help}
       ["devton", "help"] -> {:help}
@@ -185,7 +186,10 @@ defmodule DevtonSlack.Cli do
             [
               strict: [
                 top: :string
-              ]
+              ],
+              aliases: [
+                t: :top
+              ],
             ]
           )
           {:tags, validated_args}
