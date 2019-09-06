@@ -2,7 +2,14 @@
     <div class="row">
         <div class="col-12">
             <h1 class="mb-5">Contact</h1>
-            <p>Any questions? Shot me an <a href="mailto:perzankowski.kacper@gmail.com"><strong>email</strong></a>!</p>
+            <p>
+                Any questions?
+            </p>
+            <ul>
+                <li>shot me an email: <a href="mailto:perzankowski.kacper@gmail.com"><strong>perzankowski.kacper@gmail.com</strong></a></li>
+                <li>send message: <a href="https://dev.to/perzanko"><strong>dev.to/perzanko</strong></a></li>
+                <li>catch me on github: <a href="https://github.com/perzanko"><strong>github.com/perzanko</strong></a></li>
+            </ul>
         </div>
     </div>
 </div>
