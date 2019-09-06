@@ -1,2 +1,6 @@
 /* This file is for your main application css. */
 
+html, body {
+    background-color: #F9F9FA;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

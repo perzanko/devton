@@ -23,5 +23,6 @@ defmodule DevtonWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/privacy-policy", PageController, :privacy_policy
   end
 end

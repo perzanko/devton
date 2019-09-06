@@ -3,7 +3,7 @@ defmodule DevtonWeb.PageController do
 
   alias Devton.Subscriptions
 
-  #  def index(conn, %{}), do: render(conn, "index.html", success: false)
+
   def index(conn, params) do
     success_img = case params["success"] == "true" do
       true ->
@@ -22,4 +22,6 @@ defmodule DevtonWeb.PageController do
       }
     )
   end
+
+  def privacy_policy(conn, %{}), do: render(conn, "privacy-policy.html")
 end
