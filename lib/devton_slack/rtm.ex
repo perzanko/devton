@@ -114,6 +114,8 @@ defmodule DevtonSlack.Rtm do
   end
 
   defp can_process_command(text) do
-    !String.contains?(text, "Do Not Disturb")
+    if String.contains?(text, "Do Not Disturb"), do: false
+    if String.contains?(text, "snoozed notifications"), do: false
+    true
   end
 end
