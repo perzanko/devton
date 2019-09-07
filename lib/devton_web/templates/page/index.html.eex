@@ -8,7 +8,7 @@
                 </div>
                 <h1>Devton</h1>
                 <h5>Highly customizable and personalized <a href="https://dev.to/" target="_blank">dev.to</a> newsletter 📪</h5>
-                <a class="slack-btn" href="https://slack.com/oauth/authorize?client_id=<%= System.get_env("SLACK_CLIENT_ID") %>&scope=chat:write:bot,bot"><img alt="Add to Slack" height="40" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" ></a>
+                <a class="slack-btn" href="https://slack.com/oauth/authorize?client_id=<%= System.get_env("SLACK_CLIENT_ID") %>&scope=bot"><img alt="Add to Slack" height="40" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" ></a>
             </div>
         </div>
         <div class="col-sm-12 col-md-5 order-md-1 mb-5">
