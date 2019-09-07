@@ -26,7 +26,7 @@ defmodule Devton.Workspaces.EventHandlers.WorkspaceCreated do
         Rtm.send_message_to_channel(
           workspace_name,
           user_id,
-          Message.welcome(user_id) <> Message.help
+          Message.welcome(user_id)
         )
       end
     )
