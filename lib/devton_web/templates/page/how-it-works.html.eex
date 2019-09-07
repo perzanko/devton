@@ -8,6 +8,7 @@
                 <h5 class="mb-3">Install <strong>Devton</strong> in your workspace</h5>
                 <img height="40" class="mb-3" src="<%= Routes.static_path(@conn, "/images/slack_button.svg") %>" > <br>
                 <img class="mb-3" src="<%= Routes.static_path(@conn, "/images/connect_workspace.png") %>" >
+                <img class="mb-3" style="max-width: 500px;"src="<%= Routes.static_path(@conn, "/images/welcome.png") %>" >
               </div>
             </div>
             <div class="media mb-5">
