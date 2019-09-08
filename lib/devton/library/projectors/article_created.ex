@@ -1,7 +1,6 @@
 defmodule Devton.Library.Projectors.ArticleCreated do
   use Commanded.Projections.Ecto,
-      name: "Library.Projectors.ArticleCreated",
-      consistency: :strong
+      name: "Library.Projectors.ArticleCreated"
 
   alias Devton.Repo
   alias Devton.Library.Events.ArticleCreated
