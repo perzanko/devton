@@ -64,17 +64,23 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
         %PerformSend{
           uuid: uuid,
           sent_articles: sent_articles_to_user,
-          suggested_articles: suggested_articles
-        } = perform_send
+          suggested_articles: suggested_articles,
+          random: random,
+          popularity_of_tags: popularity_of_tags
+        }
       ) do
-    sent_articles_ids = sent_articles_to_user |> Enum.map(fn article -> article["id"] end)
-    suggested_articles
+    sent_articles_ids = Enum.map(sent_articles_to_user, fn article -> article["id"] end)
+    reorder_articles_basing_on_scoring(
+      suggested_articles,
+      subscription.tags,
+      popularity_of_tags
+    )
     |> List.foldl(
          %SendPerformed{
            uuid: uuid,
            article_id: nil,
            sent_at: current_time(),
-           random: perform_send.random == true,
+           random: random == true,
          },
          fn article_to_send, event ->
            case event.article_id == nil do
@@ -83,7 +89,7 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
                if Enum.member?(sent_articles_ids, article_to_send.id) do
                  event
                else
-                 %SendPerformed{event | article_id: article_to_send.id }
+                 %SendPerformed{event | article_id: article_to_send.id}
                end
            end
          end
@@ -136,8 +142,39 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
     }
   end
 
-  defp current_time() do
+  def current_time() do
     {:ok, current_time} = DateTime.now("Etc/UTC")
     current_time
+  end
+
+  def reorder_articles_basing_on_scoring(articles, tags, popularity_of_tags) do
+    tags_scoring = calculate_tags_scoring(popularity_of_tags)
+    articles
+    |> Enum.map(
+         fn article ->
+           score = Enum.reduce(
+             article.tag_list,
+             1,
+             fn tag, acc ->
+               case tags_scoring[tag] do
+                 nil -> acc
+                 num -> acc + num
+               end
+             end
+           )
+           {article, score * article.positive_reactions_count}
+         end
+       )
+    |> Enum.sort(fn {_, a}, {_, b} -> a >= b end)
+    |> Enum.map(fn {article, _} -> article end)
+  end
+
+  def calculate_tags_scoring(popularity_of_tags) do
+    popularity_of_tags
+    |> Enum.to_list()
+    |> Enum.sort(fn {_, a}, {_, b} -> a >= b end)
+    |> Enum.with_index()
+    |> Enum.map(fn {{tag_name, _}, index} -> {tag_name, index + 1} end)
+    |> Enum.into(%{})
   end
 end

@@ -85,18 +85,18 @@ defmodule Devton.Subscriptions do
   def perform_send(%{"uuid" => uuid, "random" => random}, metadata \\ %{}) do
     subscription = SubscriptionRepository.find_one(%{"uuid" => uuid})
     sent_articles = SubscriptionRepository.get_sent_articles_to_user(subscription.user["id"])
-    suggested_articles = if random == true do
-      Library.get_suggested_articles()
-    else
-      Library.get_suggested_articles(subscription.tags)
+    popularity_of_tags = Library.get_tag_list_tops(subscription.tags)
+    suggested_articles = case random == true do
+      true -> Library.get_suggested_articles()
+      false -> Library.get_suggested_articles(subscription.tags)
     end
-
     result =
       %PerformSend{
         uuid: uuid,
         sent_articles: sent_articles,
         suggested_articles: suggested_articles,
-        random: random == true
+        random: random == true,
+        popularity_of_tags: popularity_of_tags,
       }
       |> Router.dispatch(metadata: metadata)
     case result do

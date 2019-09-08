@@ -38,6 +38,10 @@ defmodule Devton.Library do
     TopTagRepository.find_all(top)
   end
 
+  def get_tag_list_tops(tag_list) do
+    TopTagRepository.find_by_names(tag_list)
+  end
+
 #  Command
 
   def create_tag(tag, metadata \\ %{}) do
