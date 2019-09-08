@@ -1,11 +1,10 @@
 defmodule Devton.Subscriptions do
   @moduledoc false
 
-  import Ecto.Query
-
-  alias Devton.Repo
   alias Devton.Router
   alias Devton.Library
+
+  alias Devton.Subscriptions.Repositories.SubscriptionRepository
 
   alias Devton.Subscriptions.Commands.{
     CreateSubscription,
@@ -16,13 +15,10 @@ defmodule Devton.Subscriptions do
   alias Devton.Subscriptions.Projections.Subscription
   alias Devton.Support.Service.CronTab
 
+#  Query
+
   def get_subscription(clause) do
-    result = case clause do
-      %{"uuid" => uuid} ->
-        Repo.get(Subscription, uuid)
-      _ -> {:error, :invalid_query}
-    end
-    case result do
+    case SubscriptionRepository.find_one(clause) do
       %Subscription{} = subscription ->
         {:ok, subscription}
       _ ->
@@ -30,26 +26,19 @@ defmodule Devton.Subscriptions do
     end
   end
 
-  def get_subscriptions(%{"workspace_id" => workspace_id, "user_id" => user_id}) do
-    Repo.all(
-      from s in Subscription,
-      select: s,
-      where: s.is_active == true and
-             fragment("?->>'id'", s.workspace) == ^workspace_id and
-             fragment("?->>'id'", s.user) == ^user_id
-    )
+  def get_subscriptions(opts) do
+    SubscriptionRepository.find_all(opts)
   end
-  def get_subscriptions(%{ "active" => true }) do
-    Repo.all(
-      from s in Subscription,
-      select: s,
-      where: s.is_active == true
-    )
-  end
-  def get_subscriptions(), do: Repo.all(Subscription)
 
-  def get_subscriptions_count(),
-      do: Repo.aggregate(from(p in Subscription), :count, :uuid)
+  def get_subscriptions() do
+    SubscriptionRepository.find_all()
+  end
+
+  def get_subscriptions_count() do
+    SubscriptionRepository.get_count()
+  end
+
+#  Command
 
   def create_subscription(
         %{
@@ -94,8 +83,8 @@ defmodule Devton.Subscriptions do
   end
 
   def perform_send(%{ "uuid" => uuid }, metadata \\ %{}) do
-    subscription = Repo.get!(Subscription, uuid)
-    sent_articles = get_sent_articles_to_user(subscription.user["id"])
+    subscription = SubscriptionRepository.find_one(%{"uuid" => uuid})
+    sent_articles = SubscriptionRepository.get_sent_articles_to_user(subscription.user["id"])
     suggested_tags_articles = Library.get_suggested_articles(subscription.tags)
     suggested_other_articles = Library.get_suggested_articles()
 
@@ -129,14 +118,5 @@ defmodule Devton.Subscriptions do
         }
       reply -> reply
     end
-  end
-
-  defp get_sent_articles_to_user(user_id) do
-    query = from s in Subscription,
-                 select: [s.sent_articles],
-                 where: fragment("?->>'id'", s.user) == ^user_id
-    Repo.all(query)
-    |> Enum.map(fn [x | _] -> x end)
-    |> List.flatten
   end
 end

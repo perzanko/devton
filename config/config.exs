@@ -36,7 +36,7 @@ config :commanded_ecto_projections,
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
-config :devton, Devton.Scheduler,
+config :devton, DevtonScheduler,
       global: true,
       debug_logging: false,
       jobs: [

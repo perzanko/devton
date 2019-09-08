@@ -1,7 +1,6 @@
 defmodule Devton.Workspaces do
   @moduledoc false
 
-  alias Devton.Repo
   alias Devton.Router
 
   alias Devton.Workspaces.Commands.{
@@ -11,16 +10,12 @@ defmodule Devton.Workspaces do
     }
 
   alias Devton.Workspaces.Projections.Workspace
+  alias Devton.Workspaces.Repositories.WorkspaceRepository
+
+#  Query
 
   def get_workspace(clause) do
-    result = case clause do
-      %{"uuid" => uuid} ->
-        Repo.get(Workspace, uuid)
-      %{"name" => name} ->
-        Repo.get_by(Workspace, name: name)
-      _ -> {:error, :invalid_query}
-    end
-    case result do
+    case WorkspaceRepository.find_one(clause) do
       %Workspace{} = workspace ->
         {:ok, workspace}
       _ ->
@@ -29,8 +24,10 @@ defmodule Devton.Workspaces do
   end
 
   def get_workspaces() do
-    Repo.all(Workspace)
+    WorkspaceRepository.find_all()
   end
+
+#  Command
 
   def create_workspace(
         %{

@@ -3,21 +3,42 @@ defmodule Devton.Library do
 
   use Timex
 
-  import Ecto.Query, only: [from: 2]
+  alias Devton.Library.Repositories.TagRepository
+  alias Devton.Library.Repositories.TopTagRepository
+  alias Devton.Library.Repositories.ArticleRepository
 
-  alias Devton.Repo
   alias Devton.Router
   alias Devton.Library.Commands.{CreateTag, CreateArticle}
   alias Devton.Library.Projections.{Tag, Article, TopTag}
 
+#  Query
+
   def get_article(%{ "id" => id }) do
-    case Repo.get(Article, id) do
+    case ArticleRepository.find_one(id) do
       %Article{} = article ->
         {:ok, article}
       _ ->
         {:error, :not_found}
     end
   end
+
+  def find_tags() do
+    TagRepository.find_all()
+  end
+
+  def get_suggested_articles(tags) do
+    ArticleRepository.get_suggested_articles(tags)
+  end
+
+  def get_suggested_articles() do
+    ArticleRepository.get_suggested_articles()
+  end
+
+  def get_top_tags(top) do
+    TopTagRepository.find_all(top)
+  end
+
+#  Command
 
   def create_tag(tag, metadata \\ %{}) do
     result =
@@ -71,50 +92,5 @@ defmodule Devton.Library do
       reply ->
         reply
     end
-  end
-
-  def find_tags() do
-    query = from t in Tag, select: t.name
-    Repo.all query
-  end
-
-  def get_suggested_articles(tags) do
-    query = "
-      SELECT * from article a
-      WHERE a.published_at > '#{
-      Timex.now()
-      |> Timex.shift(days: -5)
-      |> DateTime.to_iso8601
-    }'
-      AND (#{
-      tags
-      |> Enum.map(fn tag -> "'#{tag}' = ANY(a.tag_list)" end)
-      |> Enum.join(" OR ")
-    })
-      ORDER BY a.positive_reactions_count DESC
-      LIMIT 50
-    "
-
-    result = Ecto.Adapters.SQL.query!(Repo, query)
-    Enum.map(result.rows, &Repo.load(Article, {result.columns, &1}))
-  end
-  def get_suggested_articles() do
-    query = from a in Article,
-                 order_by: [
-                   desc: a.positive_reactions_count
-                 ],
-                 where: a.published_at > ^Timex.shift(Timex.now(), days: -5),
-                 limit: 50
-    Repo.all query
-  end
-
-  def get_top_tags(top \\ 20) do
-    query = from tt in TopTag,
-      select: [tt.tag_name, count(tt.id)],
-      limit: ^top,
-      order_by: [desc: count(tt.id)],
-      group_by: tt.tag_name
-    Repo.all(query)
-    |> Enum.map(fn [tag_name, count] -> %{ tag_name: tag_name, count: count } end)
   end
 end

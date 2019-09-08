@@ -1,9 +1,9 @@
-defmodule Devton.SchedulerManager do
+defmodule DevtonScheduler.SchedulerManager do
   use GenServer
   require Logger
   import Crontab.CronExpression
 
-  alias Devton.{Scheduler, Subscriptions}
+  alias Devton.Subscriptions
 
   @delay 0
 
@@ -37,7 +37,7 @@ defmodule Devton.SchedulerManager do
            |> Enum.each(
                 fn {cron_tab, index} ->
                   subscription_job_id = covert_uuid_to_atom_value "#{subscription.uuid}_#{index}"
-                  scheduled_job = Scheduler.find_job subscription_job_id
+                  scheduled_job = DevtonScheduler.find_job subscription_job_id
                   case scheduled_job do
                     nil ->
                       create_job(subscription_job_id, subscription, cron_tab)
@@ -82,18 +82,18 @@ defmodule Devton.SchedulerManager do
   def handle_info(_, state), do: {:noreply, state}
 
   defp create_job(subscription_job_id, subscription, cron_tab) do
-    Scheduler.new_job
+    DevtonScheduler.new_job
     |> Quantum.Job.set_name(subscription_job_id)
     |> Quantum.Job.set_schedule(parse_cron_tab(cron_tab))
     |> Quantum.Job.set_timezone(subscription.user["timezone"])
     |> Quantum.Job.set_task(
          fn -> perform_send(subscription.uuid) end
        )
-    |> Scheduler.add_job
+    |> DevtonScheduler.add_job
   end
 
   defp remove_job(name),
-       do: Scheduler.delete_job(name)
+       do: DevtonScheduler.delete_job(name)
 
   defp covert_uuid_to_atom_value(uuid),
        do: uuid

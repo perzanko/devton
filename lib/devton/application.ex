@@ -14,8 +14,8 @@ defmodule Devton.Application do
       supervisor(Devton.Subscriptions.Supervisor, []),
       supervisor(DevtonAggregator.TagsAggregator, []),
       supervisor(DevtonAggregator.ArticlesAggregator, []),
-      worker(Devton.Scheduler, []),
-      supervisor(Devton.SchedulerManager, []),
+      worker(DevtonScheduler, []),
+      supervisor(DevtonScheduler.SchedulerManager, []),
       supervisor(DevtonSlack.Manager, []),
     ]
 

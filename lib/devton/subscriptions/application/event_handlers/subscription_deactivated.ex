@@ -26,5 +26,5 @@ defmodule Devton.Subscriptions.EventHandlers.SubscriptionDeactivated do
   end
 
   defp remove_scheduled_subscription(uuid),
-       do: Devton.SchedulerManager.remove_subscription(%{ "uuid" => uuid }, 1000)
+       do: DevtonScheduler.SchedulerManager.remove_subscription(%{ "uuid" => uuid }, 1000)
 end

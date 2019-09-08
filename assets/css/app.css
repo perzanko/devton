@@ -175,11 +175,11 @@ a:hover, a:focus, a:active {
     margin-top: -2px;
 }
 
-@media (min-width: 768px) {
-    .about-content {
-        padding: 0 50px;
-    }
-}
+/*@media (min-width: 768px) {*/
+/*    .about-content {*/
+/*        padding: 0 50px;*/
+/*    }*/
+/*}*/
 
 .about-content h2 {
     font-weight: 800;

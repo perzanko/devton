@@ -3,7 +3,7 @@ defmodule Devton.Subscriptions.EventHandlers.SubscriptionCreated do
 
   alias Devton.Subscriptions.Events.SubscriptionCreated
   alias DevtonSlack.{Rtm,Message}
-  alias Devton.SchedulerManager
+  alias DevtonScheduler.SchedulerManager
 
   def handle(%SubscriptionCreated{} = event, metadata) do
     send_subscribed_message(event.workspace["name"], event.user["id"], event.tags)
