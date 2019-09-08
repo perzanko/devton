@@ -110,10 +110,36 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
        )
   end
 
-  def article(user_id, article) do
+  def article(subscription, article, random) do
     tags = article.tag_list
-           |> Enum.map(fn x -> "`#{x}`" end)
-           |> Enum.join(", ")
-    "Hey <@#{user_id}>, take a coffee break and read this article! \n Tags: #{tags} \n #{article.url} \n Have a nice reading! :nerd_face:"
+           |> Enum.filter(fn x -> Enum.member?(subscription.tags, x) || random == true  end)
+           |> convert_tags()
+    "Hey <@#{subscription.user["id"]}>, #{random_article_text} \n Tags: #{tags} \n #{
+      article.url
+    } \n Have a nice reading! :nerd_face:"
+  end
+
+  def no_article(subscription) do
+    "Hey <@#{subscription.user["id"]}>, I didn't find any interesting articles" <>
+    " for you based on the tags: #{convert_tags(subscription.tags)}." <>
+    " If you'd like to read something not related to your interests just type `devton random`."
+  end
+
+  defp convert_tags(tags) do
+    tags
+    |> Enum.map(fn x -> "`#{x}`" end)
+    |> Enum.join(", ")
+  end
+
+  defp random_article_text() do
+    [
+      "take a coffee break and read this article! :coffee:",
+      "how about a quick article?",
+      "I found something awesome for you!",
+      "Do you know that the weekly average reading time worldwide is 6.5 hours? :sunglasses:. I have something for you!",
+      "How you doing? Maybe an article?",
+      "I haven't implemented any AI yet, but maybe those four IFs are enough. :sweat_smile: Article for you!"
+    ]
+    |> Enum.random()
   end
 end

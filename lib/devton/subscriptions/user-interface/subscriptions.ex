@@ -15,7 +15,7 @@ defmodule Devton.Subscriptions do
   alias Devton.Subscriptions.Projections.Subscription
   alias Devton.Support.Service.CronTab
 
-#  Query
+  #  Query
 
   def get_subscription(clause) do
     case SubscriptionRepository.find_one(clause) do
@@ -38,7 +38,7 @@ defmodule Devton.Subscriptions do
     SubscriptionRepository.get_count()
   end
 
-#  Command
+  #  Command
 
   def create_subscription(
         %{
@@ -82,18 +82,21 @@ defmodule Devton.Subscriptions do
     end
   end
 
-  def perform_send(%{ "uuid" => uuid }, metadata \\ %{}) do
+  def perform_send(%{"uuid" => uuid, "random" => random}, metadata \\ %{}) do
     subscription = SubscriptionRepository.find_one(%{"uuid" => uuid})
     sent_articles = SubscriptionRepository.get_sent_articles_to_user(subscription.user["id"])
-    suggested_tags_articles = Library.get_suggested_articles(subscription.tags)
-    suggested_other_articles = Library.get_suggested_articles()
+    suggested_articles = if random == true do
+      Library.get_suggested_articles()
+    else
+      Library.get_suggested_articles(subscription.tags)
+    end
 
     result =
       %PerformSend{
         uuid: uuid,
         sent_articles: sent_articles,
-        suggested_tags_articles: suggested_tags_articles,
-        suggested_other_articles: suggested_other_articles,
+        suggested_articles: suggested_articles,
+        random: random == true
       }
       |> Router.dispatch(metadata: metadata)
     case result do

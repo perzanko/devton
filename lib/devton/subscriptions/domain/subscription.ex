@@ -17,12 +17,11 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
         %Subscription{uuid: nil},
         %CreateSubscription{} = create_subscription
       ) do
-    {:ok, started_at} = DateTime.now("Etc/UTC")
     %SubscriptionCreated{
       uuid: create_subscription.uuid,
       cron_tabs: create_subscription.cron_tabs,
       is_active: true,
-      started_at: started_at,
+      started_at: current_time(),
       workspace: %{
         id: create_subscription.workspace_id,
         name: create_subscription.workspace_name,
@@ -65,15 +64,18 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
         %PerformSend{
           uuid: uuid,
           sent_articles: sent_articles_to_user,
-          suggested_tags_articles: suggested_tags_articles,
-          suggested_other_articles: suggested_other_articles
-        }
+          suggested_articles: suggested_articles
+        } = perform_send
       ) do
-    {:ok, sent_at} = DateTime.now("Etc/UTC")
     sent_articles_ids = sent_articles_to_user |> Enum.map(fn article -> article["id"] end)
-    suggested_tags_articles ++ suggested_other_articles
+    suggested_articles
     |> List.foldl(
-         %SendPerformed{uuid: uuid, article_id: nil, sent_at: sent_at},
+         %SendPerformed{
+           uuid: uuid,
+           article_id: nil,
+           sent_at: current_time(),
+           random: perform_send.random == true,
+         },
          fn article_to_send, event ->
            case event.article_id == nil do
              false -> event
@@ -132,5 +134,10 @@ defmodule Devton.Subscriptions.Aggregates.Subscription do
     |
       sent_articles: [%{id: article_id, sent_at: sent_at} | subscription.sent_articles],
     }
+  end
+
+  defp current_time() do
+    {:ok, current_time} = DateTime.now("Etc/UTC")
+    current_time
   end
 end

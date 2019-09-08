@@ -4,5 +4,6 @@ defmodule Devton.Subscriptions.Events.SendPerformed do
     :uuid,
     :article_id,
     :sent_at,
+    :random,
   ]
 end

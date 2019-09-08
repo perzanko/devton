@@ -49,6 +49,8 @@ defmodule DevtonSlack.Rtm do
         run_command(:tags, top, message, slack)
       {:help} ->
         run_command(:help, message, slack)
+      {:random} ->
+        run_command(:random, message, slack)
       {:status} ->
         run_command(:status, message, slack)
       {:invalid_command} ->
@@ -106,6 +108,24 @@ defmodule DevtonSlack.Rtm do
       }
     )
     send_message(Message.status(subscriptions), message.channel, slack)
+  end
+
+  defp run_command(:random, message, slack) do
+    indicate_typing(message.channel, slack)
+    [subscription | subscriptions] = Devton.Subscriptions.get_subscriptions(
+      %{
+        "user_id" => message.user,
+        "workspace_id" => slack.team.id,
+      }
+    )
+    if subscription.uuid !== nil do
+      Devton.Subscriptions.perform_send(
+        %{
+          "uuid" => subscription.uuid,
+          "random" => true,
+        }
+      )
+    end
   end
 
   defp run_command(:invalid_command, message, slack) do

@@ -38,7 +38,7 @@ defmodule Devton.Library.Repositories.ArticleRepository do
                    desc: a.positive_reactions_count
                  ],
                  where: a.published_at > ^Timex.shift(Timex.now(), days: -5),
-                 limit: 50
+                 limit: 100
     Repo.all query
   end
 end

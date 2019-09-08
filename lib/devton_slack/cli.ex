@@ -103,6 +103,9 @@ defmodule DevtonSlack.Cli do
     iex> DevtonSlack.Cli.detect_command(["devton", "--help"])
     {:help}
 
+    iex> DevtonSlack.Cli.detect_command(["devton", "random"])
+    {:random}
+
     iex> DevtonSlack.Cli.detect_command(["devton", "--test", "test"])
     {:invalid_command}
 
@@ -117,6 +120,7 @@ defmodule DevtonSlack.Cli do
       ["devton", "--help"] -> {:help}
       ["devton", "-h"] -> {:help}
       ["devton", "help"] -> {:help}
+      ["devton", "random"] -> {:random}
       ["devton"] -> {:help}
       _ -> {:invalid_command}
     end

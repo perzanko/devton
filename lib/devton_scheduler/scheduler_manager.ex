@@ -105,5 +105,5 @@ defmodule DevtonScheduler.SchedulerManager do
     cron_tab_parsed
   end
 
-  defp perform_send(uuid), do: Subscriptions.perform_send(%{"uuid" => uuid})
+  defp perform_send(uuid), do: Subscriptions.perform_send(%{"uuid" => uuid, "random" => false})
 end
