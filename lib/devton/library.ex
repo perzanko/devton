@@ -60,7 +60,7 @@ defmodule Devton.Library do
         user: article["user"] || %{},
         organization: article["organization"] || %{}
       }
-      |> Router.dispatch(%{metadata: metadata})
+      |> Router.dispatch(metadata: metadata)
 
     case result do
       :ok ->
