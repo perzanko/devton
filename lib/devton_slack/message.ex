@@ -135,8 +135,8 @@ devton subscribe -m 8:00,21:00 -d monday,wednesday,friday -t node,react,typescri
     [
       "take a coffee break and read this article! :coffee:",
       "how about a quick article?",
-      "I found something awesome for you!",
-      "Do you know that the weekly average reading time worldwide is 6.5 hours? :sunglasses:. I have something for you!",
+      "I found something *awesome* for you!",
+      "30 minutes of reading daily can increase your *intelligence* :sunglasses: I have something for you!",
       "How you doing? Maybe an article?",
       "I haven't implemented any AI yet, but maybe those four IFs are enough. :sweat_smile: Article for you!"
     ]
