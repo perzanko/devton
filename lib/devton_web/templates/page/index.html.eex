@@ -14,7 +14,7 @@
         <div class="col-sm-12 col-md-5 order-md-1 mb-5">
             <div class="about-content">
                 <h2 class="mb-4"><span class="typed"></span></h2>
-                <p class="mb-4">Get the most interesting articles from <a href="dev.to"><strong>dev.to</strong></a> site directly on your <u>Slack</u>!</p>
+                <p class="mb-4">Get the most interesting articles from <a href="https://dev.to/"><strong>dev.to</strong></a> site directly on your <u>Slack</u>!</p>
                 <a href="/how-it-works" class="btn btn-outline-dark">See how it works</a>
             </div>
         </div>
